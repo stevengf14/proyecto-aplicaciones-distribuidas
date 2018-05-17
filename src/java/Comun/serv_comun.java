@@ -33,6 +33,7 @@ public class serv_comun extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     String ls_mensaje = "";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -41,34 +42,63 @@ public class serv_comun extends HttpServlet {
         String is_pantalla = "";
 
         String is_boton = "";
+        String is_opcion="";
         is_boton = request.getParameter("boton");
 
         if (is_boton == null || is_boton == "") {
-            is_pantalla = desplegarPantallaMenu();
+            is_pantalla = desplegarPantallaLogin();
         }
 
         if (is_boton != null && is_boton != "") {
             if (is_boton.equals("Insertar")) {
                 is_pantalla = desplegarPantallaLogin();
             }
-            if(is_boton.equals("Ingresar"))
+            if(is_boton.equals("Nomina"))
             {
-                String ls_usuario="";
-                String ls_contrasenia="";
-                ls_usuario=request.getParameter("usuario");
-                ls_contrasenia=request.getParameter("contrasenia");
-                if(ls_usuario.equals("steven")&&ls_contrasenia.equals("1234"))
-                {
-                    is_pantalla="";
-                    is_pantalla=desplegarPantallaMenu();
+                is_pantalla = desplegarPantallaMenu() + ("<p style=\"color: #F6DAD4\">Nomina</p>");
+            }
+            if(is_boton.equals("Biblioteca"))
+            {
+                is_pantalla = desplegarPantallaMenu() + ("<p style=\"color: #F6DAD4\">Biblioteca</p>");
+            }
+            if(is_boton.equals("Contabilidad"))
+            {
+                is_pantalla = desplegarPantallaMenu() + ("<p style=\"color: #F6DAD4\">Contabilidad</p>");
+            }
+            if(is_boton.equals("Usuarios"))
+            {
+                is_pantalla = desplegarPantallaMenu() + ("<p style=\"color: #F6DAD4\">Usuarios</p>");
+            }
+            if (is_boton.equals("Ingresar")) {
+                String ls_usuario = "";
+                String ls_contrasenia = "";
+                String usu="", contra="";
+                ls_usuario = request.getParameter("usuario");
+                ls_contrasenia = request.getParameter("contrasenia");
+                
+                if (ls_usuario.equals("steven") && ls_contrasenia.equals("1234")) {
+                    is_pantalla = "";
+                    is_pantalla = desplegarPantallaMenu();
+                } else {
+                    is_pantalla = desplegarPantallaLogin() + ("<p style=\"color: #F6DAD4\">Usuario o Contrasenia Incorrectos!</p>");
                 }
-                else
-                    is_pantalla=desplegarPantallaLogin()+("<p style=\"color: #F6DAD4\">Usuario o Contrasenia Incorrectos!</p>");
             }
 
             //Create Employee1 Entity
             //Store Employees
         }
+        
+       /* is_opcion = request.getParameter("opcion");
+        if (is_opcion == null || is_opcion == "") {
+            is_pantalla = desplegarPantallaMenu();
+        }
+
+        if (is_opcion != null && is_opcion != "") {
+           
+            if (is_opcion.equals("Nomina")) {
+                is_pantalla = desplegarPantallaLogin();
+            }
+        }*/
         //is_pantalla += ls_mensaje;
         out.println(is_pantalla);
     }
@@ -79,18 +109,26 @@ public class serv_comun extends HttpServlet {
         ls_pantalla += ("<html>");
         ls_pantalla += ("<head>");
         ls_pantalla += ("<title>Servlet serv_comun</title>");
+        
+        ls_pantalla += "<style type='text/css'>";
+        ls_pantalla += "";//Aqui va el css
+        ls_pantalla += "</style>";
         ls_pantalla += ("</head>");
         ls_pantalla += ("<body>");
-        //ls_pantalla+=("<h1>Servlet servlet_relaciones at " + request.getContextPath() + "</h1>");
         ls_pantalla += ("<form action='serv_comun' method='post'>");
-        /*ls_pantalla += ("Nombre:<input type='text' name='nombre'" + " value='" + ls_nombre + "'></input>");
-        ls_pantalla += ("<br>");
-        ls_pantalla += ("Salario:<input type='text' name='salario'" + " value='" + ls_salario + "'></input>");
-        ls_pantalla += ("<br>");
-        ls_pantalla += ("Ocupación:<input type='text' name='dig'" + " value='" + ls_dig + "'></input>");
-        ls_pantalla += ("<br>");*/
-
-        ls_pantalla += ("<input type='submit' value='Insertar' name='boton' ></input>");
+        ls_pantalla += "<div class='container'>";
+        ls_pantalla += "<h1>Menú</h1>";
+        ls_pantalla += "<li>";
+        ls_pantalla += "<input type='submit' name='boton' value='Nomina'></input>";
+        ls_pantalla += "</li>";
+        ls_pantalla += "<li>";
+        ls_pantalla += "<input type='submit' name='boton' value='Biblioteca'></input>";
+        ls_pantalla += "</li>";
+        ls_pantalla += "<li>";
+        ls_pantalla += "<input type='submit' name='boton' value='Contabilidad'></input>";
+        ls_pantalla += "</li>";
+        ls_pantalla += "</div>";
+        ls_pantalla += ("<input type='submit' value='Usuarios' name='boton' ></input>");
         ls_pantalla += "</form>";
         ls_pantalla += ("</body>");
         ls_pantalla += ("</html>");
