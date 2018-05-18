@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Steven
  */
 @WebServlet(name = "serv_comun", urlPatterns = {"/serv_comun"})
-public class serv_comun extends HttpServlet {
+public class serv_login extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,7 +43,6 @@ public class serv_comun extends HttpServlet {
         String is_pantalla = "";
 
         String is_boton = "";
-        String is_opcion="";
         is_boton = request.getParameter("boton");
 
         if (is_boton == null || is_boton == "") {
@@ -50,25 +50,8 @@ public class serv_comun extends HttpServlet {
         }
 
         if (is_boton != null && is_boton != "") {
-            if (is_boton.equals("Insertar")) {
-                is_pantalla = desplegarPantallaLogin();
-            }
-            if(is_boton.equals("Nomina"))
-            {
-                is_pantalla = desplegarPantallaMenu() + ("<p style=\"color: #F6DAD4\">Nomina</p>");
-            }
-            if(is_boton.equals("Biblioteca"))
-            {
-                is_pantalla = desplegarPantallaMenu() + ("<p style=\"color: #F6DAD4\">Biblioteca</p>");
-            }
-            if(is_boton.equals("Contabilidad"))
-            {
-                is_pantalla = desplegarPantallaMenu() + ("<p style=\"color: #F6DAD4\">Contabilidad</p>");
-            }
-            if(is_boton.equals("Usuarios"))
-            {
-                is_pantalla = desplegarPantallaMenu() + ("<p style=\"color: #F6DAD4\">Usuarios</p>");
-            }
+            
+            
             if (is_boton.equals("Ingresar")) {
                 String ls_usuario = "";
                 String ls_contrasenia = "";
@@ -78,63 +61,28 @@ public class serv_comun extends HttpServlet {
                 
                 if (ls_usuario.equals("steven") && ls_contrasenia.equals("1234")) {
                     is_pantalla = "";
-                    is_pantalla = desplegarPantallaMenu();
+                    /*serv_menu sm= new serv_menu();
+                    sm.doPost(request, response);*/
+                    //sm.desplegarPantallaMenu();
+                    
+                    /*
+                    /*
+                    /*ayuuuuuuuuda!!!!
+                    /*
+                    */
+                    RequestDispatcher rd = request.getRequestDispatcher("/serv_menu");
+                    rd.forward(request,response);
+                    //is_pantalla = "<a href='http://localhost:8080/distribuidas/serv_menu'></a>";
                 } else {
                     is_pantalla = desplegarPantallaLogin() + ("<p style=\"color: #F6DAD4\">Usuario o Contrasenia Incorrectos!</p>");
                 }
             }
-
-            //Create Employee1 Entity
-            //Store Employees
         }
         
-       /* is_opcion = request.getParameter("opcion");
-        if (is_opcion == null || is_opcion == "") {
-            is_pantalla = desplegarPantallaMenu();
-        }
-
-        if (is_opcion != null && is_opcion != "") {
-           
-            if (is_opcion.equals("Nomina")) {
-                is_pantalla = desplegarPantallaLogin();
-            }
-        }*/
-        //is_pantalla += ls_mensaje;
         out.println(is_pantalla);
     }
 
-    public String desplegarPantallaMenu() {
-        String ls_pantalla = "";
-        ls_pantalla += ("<!DOCTYPE html>");
-        ls_pantalla += ("<html>");
-        ls_pantalla += ("<head>");
-        ls_pantalla += ("<title>Servlet serv_comun</title>");
-        
-        ls_pantalla += "<style type='text/css'>";
-        ls_pantalla += "";//Aqui va el css
-        ls_pantalla += "</style>";
-        ls_pantalla += ("</head>");
-        ls_pantalla += ("<body>");
-        ls_pantalla += ("<form action='serv_comun' method='post'>");
-        ls_pantalla += "<div class='container'>";
-        ls_pantalla += "<h1>Menú</h1>";
-        ls_pantalla += "<li>";
-        ls_pantalla += "<input type='submit' name='boton' value='Nomina'></input>";
-        ls_pantalla += "</li>";
-        ls_pantalla += "<li>";
-        ls_pantalla += "<input type='submit' name='boton' value='Biblioteca'></input>";
-        ls_pantalla += "</li>";
-        ls_pantalla += "<li>";
-        ls_pantalla += "<input type='submit' name='boton' value='Contabilidad'></input>";
-        ls_pantalla += "</li>";
-        ls_pantalla += "</div>";
-        ls_pantalla += ("<input type='submit' value='Usuarios' name='boton' ></input>");
-        ls_pantalla += "</form>";
-        ls_pantalla += ("</body>");
-        ls_pantalla += ("</html>");
-        return ls_pantalla;
-
-    }
+    
 
     public String desplegarPantallaLogin() {
         String ls_pantalla = "";
@@ -211,6 +159,7 @@ public class serv_comun extends HttpServlet {
         ls_pantalla += "<input type='text' name='usuario' placeholder='Usuario' required='required' />";
         ls_pantalla += "<input type='password' name='contrasenia' placeholder='Contrasenia' required='required' />";
         ls_pantalla += "<input type='submit' class='btn btn-primary btn-block btn-large' name='boton' value='Ingresar'></input>";
+        ls_pantalla +="<a href='http://localhost:8080/distribuidas/serv_usuarios'>crear usuario</a>";
         ls_pantalla += "</form>";
         ls_pantalla += "</div>";
 
@@ -220,29 +169,7 @@ public class serv_comun extends HttpServlet {
         return ls_pantalla;
     }
 
-    public String desplegarPantallaUsuarios() {
-        String ls_pantalla = "", ls_nombre = "", ls_salario = "", ls_dig = "";
-        ls_pantalla += ("<!DOCTYPE html>");
-        ls_pantalla += ("<html>");
-        ls_pantalla += ("<head>");
-        ls_pantalla += ("<title>Servlet serv_comun</title>");
-        ls_pantalla += ("</head>");
-        ls_pantalla += ("<body>");
-        //ls_pantalla+=("<h1>Servlet servlet_relaciones at " + request.getContextPath() + "</h1>");
-        ls_pantalla += ("<form action='serv_comun' method='post'>");
-        ls_pantalla += ("Nombre:<input type='text' name='nombre'" + " value='" + ls_nombre + "'></input>");
-        ls_pantalla += ("<br>");
-        ls_pantalla += ("Salario:<input type='text' name='salario'" + " value='" + ls_salario + "'></input>");
-        ls_pantalla += ("<br>");
-        ls_pantalla += ("Ocupación:<input type='text' name='dig'" + " value='" + ls_dig + "'></input>");
-        ls_pantalla += ("<br>");
-
-        ls_pantalla += ("<input type='submit' value='Insertar' name='boton' ></input>");
-        ls_pantalla += "</form>";
-        ls_pantalla += ("</body>");
-        ls_pantalla += ("</html>");
-        return ls_pantalla;
-    }
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
