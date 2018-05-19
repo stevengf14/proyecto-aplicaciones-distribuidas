@@ -13,6 +13,6 @@ import javax.ejb.Local;
  */
 @Local
 public interface Bean_PermisosLocal {
-    public String asignar_permiso(String con, String bib, String nom);
+    public String asignar_permiso(String con, String bib, String nom, String usu);
     
 }

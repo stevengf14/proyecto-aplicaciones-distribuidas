@@ -56,7 +56,7 @@ public class serv_permisos_usuarios extends HttpServlet {
 
         if (is_boton != null && is_boton != "") {
             if (is_boton.equals("Guardar")) {
-                ls_mensaje=bean_permisos.asignar_permiso(request.getParameter("check_cont"),request.getParameter("check_biblioteca"), request.getParameter("check_nomina"));
+                ls_mensaje=bean_permisos.asignar_permiso(request.getParameter("check_cont"),request.getParameter("check_biblioteca"), request.getParameter("check_nomina"), request.getParameter("check_usuarios"));
                 
             }
                 is_pantalla = desplegarPantallaUsuarios() + ls_mensaje;
@@ -87,7 +87,7 @@ public class serv_permisos_usuarios extends HttpServlet {
         ls_pantalla += ("<input type='checkbox' name='check_cont' id='contabilidad' value='contabilidad'>Contabilidad</input><br>");
         ls_pantalla += ("<input type='checkbox' name='check_biblioteca' id='biblioteca' value='biblioteca'>Biblioteca</input><br>");
         ls_pantalla += ("<input type='checkbox' name='check_nomina' id='nomina' value='nomina'>Nómina</input><br>");
-        
+        ls_pantalla += ("<input type='checkbox' name='check_usuarios' id='nomina' value='usuarios'>Usuarios</input><br>");
         ls_pantalla += ("<input type='submit' value='Guardar' name='boton' ></input>");
         ls_pantalla += "</form>";
         ls_pantalla += ("</body>");
