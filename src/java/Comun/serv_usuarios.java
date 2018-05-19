@@ -29,6 +29,8 @@ public class serv_usuarios extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    String ls_mensaje = "";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -37,38 +39,82 @@ public class serv_usuarios extends HttpServlet {
         String is_pantalla = "";
 
         String is_boton = "";
+        String ls_nombres = "";
+        String ls_apellidos = "";
+        String ls_usuario = "";
+        String ls_contrasenia = "";
+        String ls_contrasenia2 = "";
         is_boton = request.getParameter("boton");
 
         if (is_boton == null || is_boton == "") {
-            is_pantalla = desplegarPantallaUsuarios();
+            is_pantalla = desplegarPantallaUsuarios("", "", "", "", "");
         }
 
         if (is_boton != null && is_boton != "") {
             if (is_boton.equals("Insertar")) {
-                is_pantalla = desplegarPantallaUsuarios();
+                ls_nombres = request.getParameter("nombres");
+                ls_apellidos = request.getParameter("apellidos");
+                ls_usuario = request.getParameter("usuario");
+                ls_contrasenia = request.getParameter("contrasenia");
+                ls_contrasenia2 = request.getParameter("contrasenia2");
+                if (!ls_contrasenia.equals(ls_contrasenia2)) {
+                    ls_mensaje = "Las contrasenias deben coincidir!";
+                } else {
+                    /*
+                
+                
+                EntityManagerFactory emfactory = Persistence.createEntityManagerFactory("/*persistencia");
+                EntityManager entitymanager = emfactory.createEntityManager();
+                try {
+                    entitymanager.getTransaction().begin();
+                    objeto_usuario usuario = new objeto_usuario();
+                    usuario.setNombres(ls_nombres);
+                    usuario.setApellidos(ls_apellidos);
+                    usuario.setUsuario(ls_usuario);
+                    usuario.setContrasenia(ls_contrasenia);
+                    usuario.setPermisos("0");
+                    
+                    entitymanager.persist(usuario);
+                    entitymanager.getTransaction().commit();
+
+                    ls_mensaje += ("Se insertó correctamente");
+                    is_pantalla = desplegarPantallaUsuarios("","","","","");
+                } catch (Exception ex) {
+                    entitymanager.getTransaction().commit();
+                    ls_mensaje = "inserción incorrecta";
+                }
+                entitymanager.close();
+                emfactory.close();
+                
+                     */
+                }
+                is_pantalla = desplegarPantallaUsuarios("", "", "", "", "") + ls_mensaje;
             }
-            
+
         }
         out.println(is_pantalla);
     }
-    
-    public String desplegarPantallaUsuarios() {
-        String ls_pantalla = "", ls_nombre = "", ls_salario = "", ls_dig = "";
+
+    public String desplegarPantallaUsuarios(String ls_nombres, String ls_apellidos, String ls_usuario, String ls_contrasenia, String ls_contrasenia2) {
+        String ls_pantalla = "";
         ls_pantalla += ("<!DOCTYPE html>");
         ls_pantalla += ("<html>");
         ls_pantalla += ("<head>");
-        ls_pantalla += ("<title>Servlet serv_comun</title>");
+        ls_pantalla += ("<title>Servlet serv_usuarios</title>");
         ls_pantalla += ("</head>");
         ls_pantalla += ("<body>");
-        //ls_pantalla+=("<h1>Servlet servlet_relaciones at " + request.getContextPath() + "</h1>");
-        ls_pantalla += ("<form action='serv_comun' method='post'>");
-        ls_pantalla += ("Nombre:<input type='text' name='nombre'" + " value='" + ls_nombre + "'></input>");
+        ls_pantalla += ("<h1>Nuevo Usuario</h1>");
+        ls_pantalla += ("<form action='serv_usuarios' method='post'>");
+        ls_pantalla += ("Nombres:<input type='text' name='nombres' required='required'" + " value='" + ls_nombres + "'></input>");
         ls_pantalla += ("<br>");
-        ls_pantalla += ("Salario:<input type='text' name='salario'" + " value='" + ls_salario + "'></input>");
+        ls_pantalla += ("Apellidos:<input type='text' name='apellidos' required='required'" + " value='" + ls_apellidos + "'></input>");
         ls_pantalla += ("<br>");
-        ls_pantalla += ("Ocupación:<input type='text' name='dig'" + " value='" + ls_dig + "'></input>");
+        ls_pantalla += ("Usuario:<input type='text' name='usuario' required='required'" + " value='" + ls_usuario + "'></input>");
         ls_pantalla += ("<br>");
-
+        ls_pantalla += ("Contrasenia:<input type='password' name='contrasenia' required='required'" + " value='" + ls_contrasenia + "'></input>");
+        ls_pantalla += ("<br>");
+        ls_pantalla += ("Repetir Contrasenia:<input type='password' name='contrasenia2' required='required'" + " value='" + ls_contrasenia2 + "'></input>");
+        ls_pantalla += ("<br>");
         ls_pantalla += ("<input type='submit' value='Insertar' name='boton' ></input>");
         ls_pantalla += "</form>";
         ls_pantalla += ("</body>");

@@ -55,7 +55,6 @@ public class serv_login extends HttpServlet {
             if (is_boton.equals("Ingresar")) {
                 String ls_usuario = "";
                 String ls_contrasenia = "";
-                String usu="", contra="";
                 ls_usuario = request.getParameter("usuario");
                 ls_contrasenia = request.getParameter("contrasenia");
                 
@@ -70,7 +69,7 @@ public class serv_login extends HttpServlet {
                     /*ayuuuuuuuuda!!!!
                     /*
                     */
-                    RequestDispatcher rd = request.getRequestDispatcher("/serv_menu");
+                    RequestDispatcher rd = request.getRequestDispatcher("/serv_menu.java");
                     rd.forward(request,response);
                     //is_pantalla = "<a href='http://localhost:8080/distribuidas/serv_menu'></a>";
                 } else {
