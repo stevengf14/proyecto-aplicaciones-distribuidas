@@ -3,15 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Comun;
+package Contabilidad;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import javax.ejb.EJB;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,8 +18,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Steven
  */
-@WebServlet(name = "serv_permisos_usuarios", urlPatterns = {"/serv_permisos_usuarios"})
-public class serv_permisos_usuarios extends HttpServlet {
+@WebServlet(name = "serv_Menu_Contabilidad", urlPatterns = {"/serv_Menu_Contabilidad"})
+public class serv_Menu_Contabilidad extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,66 +30,78 @@ public class serv_permisos_usuarios extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    String ls_mensaje = "";
-
-    @EJB
-    Bean_PermisosLocal bean_permisos;
-            
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        //try (PrintWriter out = response.getWriter()) {
         String is_pantalla = "";
-
         String is_boton = "";
-        String usuario="";
         is_boton = request.getParameter("boton");
 
         if (is_boton == null || is_boton == "") {
-            is_pantalla = desplegarPantallaUsuarios();
+            is_pantalla = desplegarPantallaMenu();
         }
 
         if (is_boton != null && is_boton != "") {
-            usuario=request.getParameter("usuario");
-            if (is_boton.equals("Guardar")) {
-                ls_mensaje=bean_permisos.asignar_permiso(request.getParameter("check_cont"),request.getParameter("check_biblioteca"), request.getParameter("check_nomina"), request.getParameter("check_usuarios"));
-                
+            
+            if(is_boton.equals("Tipo Cuenta"))
+            {
+                is_pantalla = desplegarPantallaMenu() + ("<p style=\"color: #F6DAD4\">Tipo Cuenta</p>");
             }
-                is_pantalla = desplegarPantallaUsuarios() + ls_mensaje;
+            if(is_boton.equals("Cuenta"))
+            {
+                is_pantalla = desplegarPantallaMenu() + ("<p style=\"color: #F6DAD4\">Cuenta</p>");
             }
-
-        
+            if(is_boton.equals("Comprobante"))
+            {
+                is_pantalla = desplegarPantallaMenu() + ("<p style=\"color: #F6DAD4\">Comprobante</p>");
+            }
+            if(is_boton.equals("Reportes"))
+            {
+                is_pantalla = desplegarPantallaMenu() + ("<p style=\"color: #F6DAD4\">Reportes</p>");
+            }
+            if(is_boton.equals("Regresar"))
+            {
+                is_pantalla = desplegarPantallaMenu() + ("<p style=\"color: #F6DAD4\">Regresar</p>");
+            }
+        }
         out.println(is_pantalla);
     }
-    
-    public String desplegarPantallaUsuarios() {
+    public String desplegarPantallaMenu() {
         String ls_pantalla = "";
         ls_pantalla += ("<!DOCTYPE html>");
         ls_pantalla += ("<html>");
         ls_pantalla += ("<head>");
-        ls_pantalla += ("<title>Servlet serv_permisos_usuarios</title>");
+        ls_pantalla += ("<title>Servlet serv_Menu_Contabilidad</title>");
+        ls_pantalla += "<style type='text/css'>";
+        ls_pantalla += "";//Aqui va el css
+        ls_pantalla += "</style>";
         ls_pantalla += ("</head>");
         ls_pantalla += ("<body>");
-        ls_pantalla += ("<h1>Permisos de Usuarios</h1>");
-        ls_pantalla += ("<form action='serv_permisos_usuarios' method='post'>");
-        ls_pantalla += ("Seleccione usuario:</br>");
-        ls_pantalla += ("<select name='usuario'>");
-        for(int i=0;i<5;i++)
-        {
-            ls_pantalla += ("<option value="+i+">"+i+"</option>");
-        }
-        ls_pantalla += ("</select>");
-        ls_pantalla += ("</br>");
-        ls_pantalla += ("<input type='checkbox' name='check_cont' id='contabilidad' value='contabilidad'>Contabilidad</input><br>");
-        ls_pantalla += ("<input type='checkbox' name='check_biblioteca' id='biblioteca' value='biblioteca'>Biblioteca</input><br>");
-        ls_pantalla += ("<input type='checkbox' name='check_nomina' id='nomina' value='nomina'>Nómina</input><br>");
-        ls_pantalla += ("<input type='checkbox' name='check_usuarios' id='nomina' value='usuarios'>Usuarios</input><br>");
-        ls_pantalla += ("<input type='submit' value='Guardar' name='boton' ></input>");
+        ls_pantalla += ("<form action='serv_Menu_Contabilidad' method='post'>");
+        ls_pantalla += "<div class='container'>";
+        ls_pantalla += "<h1>Menú</h1>";
+        ls_pantalla += "<li>";
+        ls_pantalla += "<input type='submit' name='boton' value='Tipo Cuenta'></input>";
+        ls_pantalla += "</li>";
+        ls_pantalla += "<li>";
+        ls_pantalla += "<input type='submit' name='boton' value='Cuenta'></input>";
+        ls_pantalla += "</li>";
+        ls_pantalla += "<li>";
+        ls_pantalla += "<input type='submit' name='boton' value='Comprobante'></input>";
+        ls_pantalla += "</li>";
+        ls_pantalla += "<li>";
+        ls_pantalla += ("<input type='submit' value='Reportes' name='boton' ></input>");
+        ls_pantalla += "</li>";
+        ls_pantalla += "<li>";
+        ls_pantalla += ("<input type='submit' value='Regresar' name='boton' ></input>");
+        ls_pantalla += "</li>";
+        ls_pantalla += "</div>";
         ls_pantalla += "</form>";
         ls_pantalla += ("</body>");
         ls_pantalla += ("</html>");
         return ls_pantalla;
+
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
