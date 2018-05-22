@@ -91,6 +91,7 @@ public class serv_permisos_usuarios extends HttpServlet {
         ls_pantalla += ("<input type='checkbox' name='check_usuarios' id='nomina' value='usuarios'>Usuarios</input><br>");
         ls_pantalla += ("<input type='submit' value='Guardar' name='boton' ></input>");
         ls_pantalla += "</form>";
+        ls_pantalla += ("<a href='http://localhost:8080/distribuidas/serv_menu'><input type='submit' value='Regresar' name='boton' ></a>");
         ls_pantalla += ("</body>");
         ls_pantalla += ("</html>");
         return ls_pantalla;

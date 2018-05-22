@@ -107,8 +107,9 @@ public class serv_cuenta extends HttpServlet {
         ls_pantalla += ("<input type='submit' value='Buscar' name='boton' ></input>");
         ls_pantalla += ("<input type='submit' value='Eliminar' name='boton' ></input>");
         ls_pantalla += ("</br>");
-        ls_pantalla += ("<input type='submit' value='Regresar' name='boton' ></input>");
+        
         ls_pantalla += "</form>";
+        ls_pantalla += ("<a href='http://localhost:8080/distribuidas/serv_Menu_Contabilidad'><input type='submit' value='Regresar' name='boton' ></a>");
         ls_pantalla += ("</body>");
         ls_pantalla += ("</html>");
         return ls_pantalla;

@@ -196,7 +196,7 @@ public class serv_comprobante extends HttpServlet {
         ls_pantalla += ("</br>");
         ls_pantalla += ("Fecha: <input name='date' id='date' type='date' >");
         ls_pantalla += ("</br>");
-        ls_pantalla += ("Observaciones:</br><input type='text' id='observaciones' name='observaciones' contenteditable value='" + ls_observaciones + "'></input>");
+        ls_pantalla += ("Observaciones:</br><input type='textarea' id='observaciones' name='observaciones' contenteditable value='" + ls_observaciones + "'></input>");
         ls_pantalla += ("</br>");
         ls_pantalla += ("<input type='submit' value='Insertar' name='boton' ></input>");
         ls_pantalla += ("<input type='submit' value='Guardar' name='boton' ></input>");
@@ -228,7 +228,7 @@ public class serv_comprobante extends HttpServlet {
         ls_pantalla += ("</br>");
         
         ls_pantalla += "</form>";*/
-        ls_pantalla += ("<input type='submit' value='Regresar' name='boton' ></input>");
+        ls_pantalla += ("<a href='http://localhost:8080/distribuidas/serv_Menu_Contabilidad'><input type='submit' value='Regresar' name='boton' ></a>");
         ls_pantalla += ("</body>");
         ls_pantalla += ("</html>");
         return ls_pantalla;

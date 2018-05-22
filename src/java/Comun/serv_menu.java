@@ -55,11 +55,11 @@ public class serv_menu extends HttpServlet {
             if(is_boton.equals("Biblioteca"))
             {
                 is_pantalla = desplegarPantallaMenu() + ("<p style=\"color: #F6DAD4\">Biblioteca</p>");
-            }
+            }/*
             if(is_boton.equals("Contabilidad"))
             {
                 is_pantalla = desplegarPantallaMenu() + ("<p style=\"color: #F6DAD4\">Contabilidad</p>");
-            }
+            }*/
             if(is_boton.equals("Usuarios"))
             {
                 //is_pantalla = desplegarPantallaUsuarios();
@@ -79,21 +79,17 @@ public class serv_menu extends HttpServlet {
         ls_pantalla += "</style>";
         ls_pantalla += ("</head>");
         ls_pantalla += ("<body>");
-        ls_pantalla += ("<form action='serv_menu' method='post'>");
-        ls_pantalla += "<div class='container'>";
-        ls_pantalla += "<h1>Menú</h1>";
-        ls_pantalla += "<li>";
+        ls_pantalla += "<h1>Menú Principal</h1>";
         ls_pantalla += "<input type='submit' name='boton' value='Nomina'></input>";
-        ls_pantalla += "</li>";
-        ls_pantalla += "<li>";
+        ls_pantalla += "</br>";
         ls_pantalla += "<input type='submit' name='boton' value='Biblioteca'></input>";
-        ls_pantalla += "</li>";
-        ls_pantalla += "<li>";
-        ls_pantalla += "<input type='submit' name='boton' value='Contabilidad'></input>";
-        ls_pantalla += "</li>";
-        ls_pantalla += "</div>";
-        ls_pantalla += ("<input type='submit' value='Usuarios' name='boton' ></input>");
-        ls_pantalla += "</form>";
+        ls_pantalla += "</br>";
+        //ls_pantalla += "<a href='http://localhost:8080/distribuidas/serv_Menu_Contabilidad class='boton'>Contabilidad</a>";
+        ls_pantalla += "<a href='http://localhost:8080/distribuidas/serv_Menu_Contabilidad'><input type='submit' name='boton' value='Contabilidad'></a>";
+        ls_pantalla += "</br>";
+        ls_pantalla += ("<a href='http://localhost:8080/distribuidas/serv_permisos_usuarios'><input type='submit' value='Usuarios' name='boton' ></a>");
+        
+        ls_pantalla += "</br>";
         ls_pantalla += ("</body>");
         ls_pantalla += ("</html>");
         return ls_pantalla;

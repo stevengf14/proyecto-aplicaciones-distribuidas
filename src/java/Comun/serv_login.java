@@ -50,38 +50,35 @@ public class serv_login extends HttpServlet {
         }
 
         if (is_boton != null && is_boton != "") {
-            
-            
+
             if (is_boton.equals("Ingresar")) {
                 String ls_usuario = "";
                 String ls_contrasenia = "";
                 ls_usuario = request.getParameter("usuario");
                 ls_contrasenia = request.getParameter("contrasenia");
-                
+
                 if (ls_usuario.equals("steven") && ls_contrasenia.equals("1234")) {
                     is_pantalla = "";
                     /*serv_menu sm= new serv_menu();
                     sm.doPost(request, response);*/
                     //sm.desplegarPantallaMenu();
-                    
+
                     /*
                     /*
                     /*ayuuuuuuuuda!!!!
                     /*
-                    */
+                     */
                     RequestDispatcher rd = request.getRequestDispatcher("/serv_menu.java");
-                    rd.forward(request,response);
+                    rd.forward(request, response);
                     //is_pantalla = "<a href='http://localhost:8080/distribuidas/serv_menu'></a>";
                 } else {
                     is_pantalla = desplegarPantallaLogin() + ("<p style=\"color: #F6DAD4\">Usuario o Contrasenia Incorrectos!</p>");
                 }
             }
         }
-        
+
         out.println(is_pantalla);
     }
-
-    
 
     public String desplegarPantallaLogin() {
         String ls_pantalla = "";
@@ -148,27 +145,32 @@ public class serv_login extends HttpServlet {
                 + "}\n"
                 + "input:focus { box-shadow: inset 0 -5px 45px rgba(100,100,100,0.4), 0 1px 1px rgba(255,255,255,0.2); }";
         ls_pantalla += "</style>";
+        ls_pantalla += "<script type=\"text/javascript\">function abrirVentana(url) {\n"
+                //+ "var nombre;"
+                //+ "nombre=document.getElementByName('nombre').value;"
+                //+ "alert(nombre);"
+                //+ "var contrasenia"
+                //+ "contrasenia=document.getElementByName('contrasenia').value;"
+                //+ "if(nombre=='steven' && contrasenia=='1234'){\n"
+                + "    window.open(url, \"nuevo\", \"directories=no, location=no, menubar=no, scrollbars=yes, statusbar=no, tittlebar=no, width=400, height=400\");\n"
+                //+"}else{alert(Usuario y/o contrasenia incorrectos})\n"
+                + "}" + "</script>";
         ls_pantalla += ("</head>");
         ls_pantalla += ("<body>");
-        ls_pantalla += ("<form action='serv_comun' method='post'>");
         //ls_pantalla+="<div class="'wrapper'"><div class="'container'">Welcome</h1><form class="'form'"><input type="'text'" placeholder="'Username'"><input type="'password'" placeholder="'Password'"><button type=\"submit\" id=\"login-button\">Login</button></form></div><ul class=\"bg-bubbles\"><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li></ul></div>";
-        ls_pantalla += "<div class='login'>";
+        ls_pantalla += "<form class='login' id='div1' name='div'>";
         ls_pantalla += "<h1>Login</h1>";
-        ls_pantalla += "<form method='post'>";
         ls_pantalla += "<input type='text' name='usuario' placeholder='Usuario' required='required' />";
         ls_pantalla += "<input type='password' name='contrasenia' placeholder='Contrasenia' required='required' />";
-        ls_pantalla += "<input type='submit' class='btn btn-primary btn-block btn-large' name='boton' value='Ingresar'></input>";
-        ls_pantalla +="<a href='http://localhost:8080/distribuidas/serv_usuarios'>crear usuario</a>";
+        //ls_pantalla += "<a href='http://localhost:8080/distribuidas/serv_menu'><input type='submit' class='btn btn-primary btn-block btn-large' name='boton' value='Ingresar'></a>";
+        ls_pantalla += "<input type='submit' class='btn btn-primary btn-block btn-large' name='boton' onClick=abrirVentana('http://localhost:8080/distribuidas/serv_menu') value='Ingresar'>";
+        ls_pantalla += "<a href='http://localhost:8080/distribuidas/serv_usuarios'>Crear usuario</a>";
         ls_pantalla += "</form>";
-        ls_pantalla += "</div>";
 
-        ls_pantalla += "</form>";
         ls_pantalla += ("</body>");
         ls_pantalla += ("</html>");
         return ls_pantalla;
     }
-
-    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
