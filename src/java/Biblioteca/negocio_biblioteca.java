@@ -73,12 +73,12 @@ public class negocio_biblioteca {
         String ls_codigo;
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("proyecto_distribuidasPU");
         EntityManager em1 = factory.createEntityManager();
-        Biblioteca.Autor ar = new Biblioteca.Autor();
+        Autor ar = new Autor();
         try {
             ar = em1.find(Autor.class, codigo);
             ls_codigo = ar.getAuCodigo();
         } catch (Exception ex) {
-            ls_codigo = null;
+            ls_codigo = "no hay chance";
         }
         em1.close();
         factory.close();

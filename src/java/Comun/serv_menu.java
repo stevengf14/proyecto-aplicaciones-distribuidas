@@ -84,10 +84,10 @@ public class serv_menu extends HttpServlet {
         ls_pantalla += "</br>";
         ls_pantalla += "<input type='submit' name='boton' value='Biblioteca'></input>";
         ls_pantalla += "</br>";
-        //ls_pantalla += "<a href='http://localhost:8080/distribuidas/serv_Menu_Contabilidad class='boton'>Contabilidad</a>";
-        ls_pantalla += "<a href='http://localhost:8080/distribuidas/serv_Menu_Contabilidad'><input type='submit' name='boton' value='Contabilidad'></a>";
+        //ls_pantalla += "<a href='http://localhost:8080/proyecto_distribuidas/serv_Menu_Contabilidad class='boton'>Contabilidad</a>";
+        ls_pantalla += "<a href='http://localhost:8080/proyecto_distribuidas/serv_Menu_Contabilidad'><input type='submit' name='boton' value='Contabilidad'></a>";
         ls_pantalla += "</br>";
-        ls_pantalla += ("<a href='http://localhost:8080/distribuidas/serv_permisos_usuarios'><input type='submit' value='Usuarios' name='boton' ></a>");
+        ls_pantalla += ("<a href='http://localhost:8080/proyecto_distribuidas/serv_permisos_usuarios'><input type='submit' value='Usuarios' name='boton' ></a>");
         
         ls_pantalla += "</br>";
         ls_pantalla += ("</body>");

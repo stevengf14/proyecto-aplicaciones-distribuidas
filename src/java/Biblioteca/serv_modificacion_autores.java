@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author JONATHAN
  */
 @WebServlet(name = "serv_modificacion_autores", urlPatterns = {"/serv_modificacion_autores"})
-public class serv_crud_autores extends HttpServlet {
+public class serv_modificacion_autores extends HttpServlet {
 
     String ls_mensaje = "";
     negocio_biblioteca nb = new negocio_biblioteca();
@@ -38,7 +38,7 @@ public class serv_crud_autores extends HttpServlet {
         ls_nombre = request.getParameter("nombre");
         ls_apellido = request.getParameter("apellido");
         if (is_boton == null || is_boton == "") {
-            is_pantalla = desplegar_pantalla("", "", "");
+            is_pantalla = desplegar_pantalla_cambios("", "", "");
         }
         if (is_boton != null && is_boton != "") {
             if (is_boton.equals("Actualizar")) {
@@ -47,7 +47,7 @@ public class serv_crud_autores extends HttpServlet {
                 } else {
                     ls_mensaje = "No se pudo modificar";
                 }
-                is_pantalla = desplegar_pantalla("", "", "");
+                is_pantalla = desplegar_pantalla_cambios("", "", "");
                 is_pantalla += ls_mensaje;
             }
             if (is_boton.equals("Buscar")) {
@@ -57,7 +57,7 @@ public class serv_crud_autores extends HttpServlet {
                 } else {
                     ls_mensaje = "No se encontró";
                 }
-                is_pantalla = desplegar_pantalla(ls_codigo, ls_nombre, ls_apellido);
+                is_pantalla = desplegar_pantalla_cambios(ls_codigo, ls_nombre, ls_apellido);
                 is_pantalla += ls_mensaje;
             }
         }
@@ -65,7 +65,7 @@ public class serv_crud_autores extends HttpServlet {
 
     }
 
-    public String desplegar_pantalla(String codigo, String nombre, String apellido) {
+    public String desplegar_pantalla_cambios(String codigo, String nombre, String apellido) {
         String ls_pantalla = "";
         ls_pantalla += "<!DOCTYPE html>";
         ls_pantalla += "<html>";
@@ -73,24 +73,7 @@ public class serv_crud_autores extends HttpServlet {
         ls_pantalla += "<title>Servlet serv_menu_biblioteca</title>";
         ls_pantalla += "</head>";
 
-        ls_pantalla += "<SCRIPT language='javascript'>";
-        ls_pantalla += "function addRow(tableID) {";
-        ls_pantalla += "var table = document.getElementById(tableID);";
-        ls_pantalla += "var rowCount = table.rows.length;";
-        ls_pantalla += "var row = table.insertRow(rowCount);";
-        ls_pantalla += "var cell1 = row.insertCell(0);";
-        ls_pantalla += "var element1 = document.createElement('input');";
-        ls_pantalla += "element1.type = 'checkbox';";
-        ls_pantalla += "cell1.appendChild(element1);";
-        ls_pantalla += "var cell2 = row.insertCell(1);";
-        ls_pantalla += "var element2 = document.createElement('input');";
-        ls_pantalla += "element2.type = 'text';";
-        ls_pantalla += "cell2.appendChild(element2);";
-        ls_pantalla += "}";
-        ls_pantalla += "</SCRIPT>";
-
-        ls_pantalla += "<body onload='addRow()'>";
-        ls_pantalla += "<form action='serv_autores' method='post'>";
+        ls_pantalla += "<form action='serv_modificacion_autores' method='post'>";
         ls_pantalla += "<h1>Tabla de Autores</h1>";
         ls_pantalla += "<header>";
         ls_pantalla += "<nav>";
@@ -107,22 +90,23 @@ public class serv_crud_autores extends HttpServlet {
         ls_pantalla += "<tr>";
         ls_pantalla += "<td>Código del Cliente</td>";
         ls_pantalla += "<td><label for='codigo'></label>";
-        ls_pantalla += "<input type='text' name='codigo' id='codigo' value='" + codigo + "'>" + codigo + "</td>";
+        ls_pantalla += "<input type='text' name='codigo'" + "value='" + codigo + "'>" + codigo + "</td>";
         ls_pantalla += "</tr>";
         ls_pantalla += "<tr>";
         ls_pantalla += "<td>Nombre del Cliente</td>";
         ls_pantalla += "<td><label for='nombre_cliente'></label>";
-        ls_pantalla += "<input type='text' name='nombre' id='nombre' class='centrado' value='" + nombre + "'></td>";
+        ls_pantalla += "<input type='text' name='nombre' class='centrado'" + "value='" + nombre + "'></td>";
         ls_pantalla += "</tr>";
         ls_pantalla += "<tr>";
         ls_pantalla += "<td>Apellido del Cliente</td>";
         ls_pantalla += "<td><label for='apellido'></label>";
-        ls_pantalla += "<input type='text' name='apellido' id='apellido' class='centrado' value='" + apellido + "'></td>";
+        ls_pantalla += "<input type='text' name='apellido' class='centrado'" + "value='" + apellido + "'></td>";
         ls_pantalla += "</tr>";
         ls_pantalla += "<tr>";
         ls_pantalla += "<td><br><br></td>";
-        ls_pantalla += "<td colspan='1'><input type='submit' name='bot_buscar' id='bot_actualizar' value='Buscar'></td>";
-        ls_pantalla += "<td colspan='1'><input type='submit' name='bot_actualizar' id='bot_actualizar' value='Actualizar'></td>";
+        ls_pantalla += "<td colspan='1'><input type='submit' name='Insertar' id='Insertar' value='Insertar'></td>";        
+        ls_pantalla += "<td colspan='1'><input type='submit' name=Buscar' id='Buscar' value='Buscar'></td>";
+        ls_pantalla += "<td colspan='1'><input type='submit' name='Actualizar' id='Actualizar' value='Actualizar'></td>";
         ls_pantalla += "</tr>";
         ls_pantalla += "</table>";
         ls_pantalla += "</form>";

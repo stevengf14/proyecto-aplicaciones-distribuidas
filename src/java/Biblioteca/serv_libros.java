@@ -64,7 +64,7 @@ public class serv_libros extends HttpServlet {
         
         ls_pantalla += "<body onload='addRow()'>";        
         ls_pantalla += "<form action='serv_autores' method='post'>";
-        ls_pantalla += "<h1>Tabla de Autores</h1>";
+        ls_pantalla += "<h1>Tabla de Libro</h1>";
         ls_pantalla += "<header>";        
         ls_pantalla += "<nav>";
         ls_pantalla += "<ul>";
@@ -90,7 +90,8 @@ public class serv_libros extends HttpServlet {
         ls_pantalla += "<aside>";
         ls_pantalla += "<input type='submit' value='Insertar' name='boton'></input>";
         ls_pantalla += "<input type='submit' value='Eliminar' name='boton' ></input>";
-        ls_pantalla += "<input type='submit' value='Modificar' name='boton'></input>";
+        ls_pantalla += "<input type='submit' value='Modificar' name='boton' onClick()='addRow(\'tabla\')'></input>";
+        ls_pantalla += "<button onclick=\"addRow(\'tabla\')\">Click me</button>";
         ls_pantalla += "<input type='submit' value='Buscar' name='boton'></input>";
         ls_pantalla += "</aside>";
         ls_pantalla += "<br>";

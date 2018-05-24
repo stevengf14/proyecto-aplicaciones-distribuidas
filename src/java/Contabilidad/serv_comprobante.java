@@ -89,21 +89,7 @@ public class serv_comprobante extends HttpServlet {
         ls_pantalla += ("<html>");
         ls_pantalla += ("<head>");
         ls_pantalla += ("<title>Servlet serv_comprobante</title>");
-        ls_pantalla += "<style type='text/css'>";
-        ls_pantalla += "#inputs {\n"
-                + "    -moz-appearance: textfield;\n"
-                + "    -webkit-appearance: textfield;\n"
-                + "    background-color: white;\n"
-                + "    background-color: -moz-field;\n"
-                + "    border: 1px solid darkgray;\n"
-                + "    box-shadow: 1px 1px 1px 0 lightgray inset;  \n"
-                + "    font: -moz-field;\n"
-                + "    font: -webkit-small-control;\n"
-                + "    margin-top: 5px;\n"
-                + "    padding: 2px 3px;\n"
-                + "    width: 398px;    \n"
-                + "}";
-        ls_pantalla += "</style>";
+        ls_pantalla += "<link rel='stylesheet' type='text/css' href='estilos1.css'>";
         ls_pantalla += ("</head>");
         ls_pantalla += ("<body>");
         ls_pantalla += ("<h1>Comprobante</h1>");
@@ -115,7 +101,9 @@ public class serv_comprobante extends HttpServlet {
         }
         ls_pantalla += ("</select>");
         ls_pantalla += ("</br>");
-        ls_pantalla += ("Fecha: <input name='date' id='date' type='date'>");
+        ls_pantalla += ("Fecha: <input type='date' name='date' id='date' value='12-12-1999;'></input>");
+        ls_pantalla += ("</br>");
+        ls_pantalla += "Apellidos:<input type='text' name='apellido'" + " value='12/12/1999'></input>";
         ls_pantalla += ("</br>");
         ls_pantalla += ("Observaciones:</br><div id='inputs' contenteditable value='" + ls_observaciones + "'></div>");
         ls_pantalla += ("</br>");
@@ -168,21 +156,7 @@ public class serv_comprobante extends HttpServlet {
         ls_pantalla += ("<html>");
         ls_pantalla += ("<head>");
         ls_pantalla += ("<title>Servlet serv_comprobante</title>");
-        ls_pantalla += "<style type='text/css'>";
-        ls_pantalla += "#observaciones {\n"
-                + "    -moz-appearance: textfield;\n"
-                + "    -webkit-appearance: textfield;\n"
-                + "    background-color: white;\n"
-                + "    background-color: -moz-field;\n"
-                + "    border: 1px solid darkgray;\n"
-                + "    box-shadow: 1px 1px 1px 0 lightgray inset;  \n"
-                + "    font: -moz-field;\n"
-                + "    font: -webkit-small-control;\n"
-                + "    margin-top: 5px;\n"
-                + "    padding: 2px 3px;\n"
-                + "    width: 398px;    \n"
-                + "}";
-        ls_pantalla += "</style>";
+        ls_pantalla += "<link rel='stylesheet' type='text/css' href='estilos1.css'>";
         ls_pantalla += ("</head>");
         ls_pantalla += ("<body>");
         ls_pantalla += ("<h1>Comprobante</h1>");
@@ -194,9 +168,9 @@ public class serv_comprobante extends HttpServlet {
         }
         ls_pantalla += ("</select>");
         ls_pantalla += ("</br>");
-        ls_pantalla += ("Fecha: <input name='date' id='date' type='date' >");
+        ls_pantalla += ("Fecha: <input name='date' id='date' type='text' placeholder='dd/mm/aaaa'>");
         ls_pantalla += ("</br>");
-        ls_pantalla += ("Observaciones:</br><input type='textarea' id='observaciones' name='observaciones' contenteditable value='" + ls_observaciones + "'></input>");
+        ls_pantalla += ("Observaciones:</br><textarea id='observaciones' name='observaciones'  value='" + ls_observaciones + "'></textarea>");
         ls_pantalla += ("</br>");
         ls_pantalla += ("<input type='submit' value='Insertar' name='boton' ></input>");
         ls_pantalla += ("<input type='submit' value='Guardar' name='boton' ></input>");

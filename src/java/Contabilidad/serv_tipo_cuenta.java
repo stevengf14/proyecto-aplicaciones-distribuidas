@@ -5,8 +5,10 @@
  */
 package Contabilidad;
 
+import Comun.Bean_PermisosLocal;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,7 +31,8 @@ public class serv_tipo_cuenta extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
+    @EJB
+    Bean_ContabilidadLocal beanContabilidad;
     String ls_mensaje="";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -51,10 +54,10 @@ public class serv_tipo_cuenta extends HttpServlet {
             nombre=request.getParameter("nombre");
             cuenta=request.getParameter("cuenta");
             if (is_boton.equals("Insertar")) {
-                ls_mensaje=nombre+" Insertado a la cuenta "+cuenta;
+                beanContabilidad.InsertarTipoCuenta(nombre);
             }
             if (is_boton.equals("Modificar")) {
-                ls_mensaje="Modificar";
+                ls_mensaje=beanContabilidad.ExtraerCodigoCuenta(nombre);
             }
             if (is_boton.equals("Guardar")) {
                 ls_mensaje="Guardar";

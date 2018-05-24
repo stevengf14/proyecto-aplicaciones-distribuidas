@@ -6,7 +6,7 @@
 package Biblioteca;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -53,7 +53,7 @@ public class Autor implements Serializable {
     @Column(name = "AU_APELLIDO")
     private String auApellido;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "auCodigo")
-    private Collection<Libro> libroCollection;
+    private List<Libro> libroList;
 
     public Autor() {
     }
@@ -93,12 +93,12 @@ public class Autor implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Libro> getLibroCollection() {
-        return libroCollection;
+    public List<Libro> getLibroList() {
+        return libroList;
     }
 
-    public void setLibroCollection(Collection<Libro> libroCollection) {
-        this.libroCollection = libroCollection;
+    public void setLibroList(List<Libro> libroList) {
+        this.libroList = libroList;
     }
 
     @Override
