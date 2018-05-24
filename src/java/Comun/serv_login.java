@@ -7,6 +7,7 @@ package Comun;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.ejb.EJB;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -34,19 +35,18 @@ public class serv_login extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     String ls_mensaje = "";
-
+    @EJB
+    Bean_PermisosLocal bean_permisos;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         //try (PrintWriter out = response.getWriter()) {
         String is_pantalla = "";
-
         String is_boton = "";
         is_boton = request.getParameter("boton");
-        is_pantalla = desplegarPantallaLogin();
-  /*     if (is_boton == null || is_boton == "") {
-            is_pantalla = desplegarPantallaLogin();
+       if (is_boton == null || is_boton == "") {
+            is_pantalla = desplegarPantallaLogin("","");
         }
 
         if (is_boton != null && is_boton != "") {
@@ -57,20 +57,60 @@ public class serv_login extends HttpServlet {
                 ls_usuario = request.getParameter("usuario");
                 ls_contrasenia = request.getParameter("contrasenia");
 
-                if (ls_usuario.equals("steven") && ls_contrasenia.equals("1234")) {
-                    is_pantalla = "";
-                    RequestDispatcher rd = request.getRequestDispatcher("/serv_menu.java");
-                    rd.forward(request, response);
+                if (bean_permisos.VerificarUsuario(ls_usuario, ls_contrasenia)) {
+                    //is_pantalla = String.valueOf(bean_permisos.InsertarUsuarioActivo(ls_usuario));
+                    if(bean_permisos.InsertarUsuarioActivo(ls_usuario)==1)
+                        is_pantalla=desplegarPantallaMenu();
+                    else
+                        is_pantalla="error";
                 } else {
-                    is_pantalla = desplegarPantallaLogin() + ("<p style=\"color: #F6DAD4\">Usuario o Contrasenia Incorrectos!</p>");
+                    is_pantalla = desplegarPantallaLogin("","") + ("<p style=\"color: #F6DAD4\">Usuario o Contrasenia Incorrectos!</p>");
                 }
             }
-        }*/
+        }
 
         out.println(is_pantalla);
     }
+    
+    public String desplegarPantallaMenu() {
+        boolean valN = bean_permisos.validarVentana("Nómina");
+        boolean valC = bean_permisos.validarVentana("Contabilidad");
+        boolean valB = bean_permisos.validarVentana("Biblioteca");
+        boolean valU = bean_permisos.validarVentana("Usuarios");
+        String ls_pantalla = "";
+        ls_pantalla += ("<!DOCTYPE html>");
+        ls_pantalla += ("<html>");
+        ls_pantalla += ("<head>");
+        ls_pantalla += ("<title>Servlet serv_menu</title>");
+        ls_pantalla += "<link rel='stylesheet' type='text/css' href='estilos1.css'>";
 
-    public String desplegarPantallaLogin() {
+        ls_pantalla += ("</head>");
+        ls_pantalla += ("<body>");
+        ls_pantalla += "<h1>Menú Principal</h1>";
+        if (valN == true) {
+            ls_pantalla += "<input type='submit' name='boton' value='Nomina'></input>";
+            ls_pantalla += "</br>";
+        }
+        if (valB == true) {
+            ls_pantalla += "<input type='submit' name='boton' value='Biblioteca'></input>";
+            ls_pantalla += "</br>";
+        }
+        //ls_pantalla += "<a href='http://localhost:8080/proyecto_distribuidas/serv_Menu_Contabilidad class='boton'>Contabilidad</a>";
+        if (valC == true) {
+            ls_pantalla += "<a href='http://localhost:8080/proyecto_distribuidas/serv_Menu_Contabilidad'><input type='submit' name='boton' value='Contabilidad'></a>";
+            ls_pantalla += "</br>";
+        }
+        if (valU == true) {
+            ls_pantalla += ("<a href='http://localhost:8080/proyecto_distribuidas/serv_permisos_usuarios'><input type='submit' value='Usuarios' name='boton' ></a>");
+            ls_pantalla += "</br>";
+        }
+        ls_pantalla += ("</body>");
+        ls_pantalla += ("</html>");
+        return ls_pantalla;
+
+    }
+    
+    public String desplegarPantallaLogin(String usu, String contra) {
         String ls_pantalla = "";
         ls_pantalla += ("<!DOCTYPE html>");
         ls_pantalla += ("<html>");
@@ -143,9 +183,9 @@ public class serv_login extends HttpServlet {
                 + "var contrasenia;"
                 + "contrasenia=document.getElementById('contrasenia').value;"
                 + "var us;"
-                + "us='steven';"
+                + "us='"+usu+"';"
                 + "var cont;"
-                + "cont='1234';"
+                + "cont='"+contra+"';"
                 + "if(usuario==us)"
                 + "{"
                 //+"location.replace('serv_menu');"
@@ -164,15 +204,15 @@ public class serv_login extends HttpServlet {
         ls_pantalla += "<input type='text' name='usuario' id='usuario' placeholder='Usuario' required='required' />";
         ls_pantalla += "<input type='password' name='contrasenia' id='contrasenia' placeholder='Contrasenia' required='required' />";
         //ls_pantalla += "<a href='http://localhost:8080/distribuidas/serv_menu'><input type='submit' class='btn btn-primary btn-block btn-large' name='boton' value='Ingresar'></a>";
-        ls_pantalla += "<input type='submit' class='btn btn-primary btn-block btn-large' name='boton' onClick=abrirVentana('http://localhost:8080/distribuidas/serv_menu') value='Ingresar'>";
-        ls_pantalla += "<a href='http://localhost:8080/distribuidas/serv_usuarios'>Crear usuario</a>";
+        ls_pantalla += "<input type='submit' class='btn btn-primary btn-block btn-large' name='boton' ) value='Ingresar'>";
+        ls_pantalla += "<a href='http://localhost:8080/proyecto_distribuidas/serv_usuarios'>Crear usuario</a>";
         ls_pantalla += "</form>";
 
         ls_pantalla += ("</body>");
         ls_pantalla += ("</html>");
         return ls_pantalla;
     }
-
+//onClick=abrirVentana('http://localhost:8080/distribuidas/serv_menu'
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

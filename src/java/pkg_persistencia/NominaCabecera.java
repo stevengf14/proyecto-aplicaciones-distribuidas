@@ -7,24 +7,18 @@ package pkg_persistencia;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -36,6 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "NominaCabecera.findAll", query = "SELECT n FROM NominaCabecera n")
     , @NamedQuery(name = "NominaCabecera.findByNcNumero", query = "SELECT n FROM NominaCabecera n WHERE n.ncNumero = :ncNumero")
+    , @NamedQuery(name = "NominaCabecera.findByEmpCedula", query = "SELECT n FROM NominaCabecera n WHERE n.empCedula = :empCedula")
     , @NamedQuery(name = "NominaCabecera.findByNcFecha", query = "SELECT n FROM NominaCabecera n WHERE n.ncFecha = :ncFecha")})
 public class NominaCabecera implements Serializable {
 
@@ -48,14 +43,14 @@ public class NominaCabecera implements Serializable {
     private String ncNumero;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 10)
+    @Column(name = "EMP_CEDULA")
+    private String empCedula;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "NC_FECHA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date ncFecha;
-    @JoinColumn(name = "EMP_CEDULA", referencedColumnName = "EMP_CEDULA")
-    @ManyToOne(optional = false)
-    private Empleado empCedula;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ncNumero")
-    private List<NominaDetalle> nominaDetalleList;
 
     public NominaCabecera() {
     }
@@ -64,8 +59,9 @@ public class NominaCabecera implements Serializable {
         this.ncNumero = ncNumero;
     }
 
-    public NominaCabecera(String ncNumero, Date ncFecha) {
+    public NominaCabecera(String ncNumero, String empCedula, Date ncFecha) {
         this.ncNumero = ncNumero;
+        this.empCedula = empCedula;
         this.ncFecha = ncFecha;
     }
 
@@ -77,29 +73,20 @@ public class NominaCabecera implements Serializable {
         this.ncNumero = ncNumero;
     }
 
+    public String getEmpCedula() {
+        return empCedula;
+    }
+
+    public void setEmpCedula(String empCedula) {
+        this.empCedula = empCedula;
+    }
+
     public Date getNcFecha() {
         return ncFecha;
     }
 
     public void setNcFecha(Date ncFecha) {
         this.ncFecha = ncFecha;
-    }
-
-    public Empleado getEmpCedula() {
-        return empCedula;
-    }
-
-    public void setEmpCedula(Empleado empCedula) {
-        this.empCedula = empCedula;
-    }
-
-    @XmlTransient
-    public List<NominaDetalle> getNominaDetalleList() {
-        return nominaDetalleList;
-    }
-
-    public void setNominaDetalleList(List<NominaDetalle> nominaDetalleList) {
-        this.nominaDetalleList = nominaDetalleList;
     }
 
     @Override

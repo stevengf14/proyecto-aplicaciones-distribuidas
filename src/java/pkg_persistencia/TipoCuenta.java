@@ -6,19 +6,16 @@
 package pkg_persistencia;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -43,8 +40,6 @@ public class TipoCuenta implements Serializable {
     @Size(max = 100)
     @Column(name = "TP_NOMBRE")
     private String tpNombre;
-    @OneToMany(mappedBy = "tpCodigo")
-    private List<Cuenta> cuentaList;
 
     public TipoCuenta() {
     }
@@ -67,15 +62,6 @@ public class TipoCuenta implements Serializable {
 
     public void setTpNombre(String tpNombre) {
         this.tpNombre = tpNombre;
-    }
-
-    @XmlTransient
-    public List<Cuenta> getCuentaList() {
-        return cuentaList;
-    }
-
-    public void setCuentaList(List<Cuenta> cuentaList) {
-        this.cuentaList = cuentaList;
     }
 
     @Override

@@ -5,7 +5,6 @@
  */
 package pkg_persistencia;
 
-import Biblioteca.Libro;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
@@ -13,8 +12,6 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -34,6 +31,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "PrestamoDetalle.findAll", query = "SELECT p FROM PrestamoDetalle p")
     , @NamedQuery(name = "PrestamoDetalle.findByCdCodigo", query = "SELECT p FROM PrestamoDetalle p WHERE p.cdCodigo = :cdCodigo")
+    , @NamedQuery(name = "PrestamoDetalle.findByPcNombre", query = "SELECT p FROM PrestamoDetalle p WHERE p.pcNombre = :pcNombre")
+    , @NamedQuery(name = "PrestamoDetalle.findByLibIsbn", query = "SELECT p FROM PrestamoDetalle p WHERE p.libIsbn = :libIsbn")
     , @NamedQuery(name = "PrestamoDetalle.findByCdCantidad", query = "SELECT p FROM PrestamoDetalle p WHERE p.cdCantidad = :cdCantidad")
     , @NamedQuery(name = "PrestamoDetalle.findByCdFechaEntrega", query = "SELECT p FROM PrestamoDetalle p WHERE p.cdFechaEntrega = :cdFechaEntrega")})
 public class PrestamoDetalle implements Serializable {
@@ -47,6 +46,16 @@ public class PrestamoDetalle implements Serializable {
     private String cdCodigo;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 5)
+    @Column(name = "PC_NOMBRE")
+    private String pcNombre;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 13)
+    @Column(name = "LIB_ISBN")
+    private String libIsbn;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "CD_CANTIDAD")
     private BigInteger cdCantidad;
     @Basic(optional = false)
@@ -54,12 +63,6 @@ public class PrestamoDetalle implements Serializable {
     @Column(name = "CD_FECHA_ENTREGA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date cdFechaEntrega;
-    @JoinColumn(name = "LIB_ISBN", referencedColumnName = "LIB_ISBN")
-    @ManyToOne(optional = false)
-    private Libro libIsbn;
-    @JoinColumn(name = "PC_NOMBRE", referencedColumnName = "PC_NOMBRE")
-    @ManyToOne(optional = false)
-    private PrestamoCabecera pcNombre;
 
     public PrestamoDetalle() {
     }
@@ -68,8 +71,10 @@ public class PrestamoDetalle implements Serializable {
         this.cdCodigo = cdCodigo;
     }
 
-    public PrestamoDetalle(String cdCodigo, BigInteger cdCantidad, Date cdFechaEntrega) {
+    public PrestamoDetalle(String cdCodigo, String pcNombre, String libIsbn, BigInteger cdCantidad, Date cdFechaEntrega) {
         this.cdCodigo = cdCodigo;
+        this.pcNombre = pcNombre;
+        this.libIsbn = libIsbn;
         this.cdCantidad = cdCantidad;
         this.cdFechaEntrega = cdFechaEntrega;
     }
@@ -80,6 +85,22 @@ public class PrestamoDetalle implements Serializable {
 
     public void setCdCodigo(String cdCodigo) {
         this.cdCodigo = cdCodigo;
+    }
+
+    public String getPcNombre() {
+        return pcNombre;
+    }
+
+    public void setPcNombre(String pcNombre) {
+        this.pcNombre = pcNombre;
+    }
+
+    public String getLibIsbn() {
+        return libIsbn;
+    }
+
+    public void setLibIsbn(String libIsbn) {
+        this.libIsbn = libIsbn;
     }
 
     public BigInteger getCdCantidad() {
@@ -96,22 +117,6 @@ public class PrestamoDetalle implements Serializable {
 
     public void setCdFechaEntrega(Date cdFechaEntrega) {
         this.cdFechaEntrega = cdFechaEntrega;
-    }
-
-    public Libro getLibIsbn() {
-        return libIsbn;
-    }
-
-    public void setLibIsbn(Libro libIsbn) {
-        this.libIsbn = libIsbn;
-    }
-
-    public PrestamoCabecera getPcNombre() {
-        return pcNombre;
-    }
-
-    public void setPcNombre(PrestamoCabecera pcNombre) {
-        this.pcNombre = pcNombre;
     }
 
     @Override

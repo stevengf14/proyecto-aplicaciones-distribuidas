@@ -11,8 +11,6 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -30,6 +28,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "CabeceraDetalle.findAll", query = "SELECT c FROM CabeceraDetalle c")
     , @NamedQuery(name = "CabeceraDetalle.findByCdCodigo", query = "SELECT c FROM CabeceraDetalle c WHERE c.cdCodigo = :cdCodigo")
+    , @NamedQuery(name = "CabeceraDetalle.findByCcNumero", query = "SELECT c FROM CabeceraDetalle c WHERE c.ccNumero = :ccNumero")
+    , @NamedQuery(name = "CabeceraDetalle.findByCCodigo", query = "SELECT c FROM CabeceraDetalle c WHERE c.cCodigo = :cCodigo")
     , @NamedQuery(name = "CabeceraDetalle.findByCdCantidadDebe", query = "SELECT c FROM CabeceraDetalle c WHERE c.cdCantidadDebe = :cdCantidadDebe")
     , @NamedQuery(name = "CabeceraDetalle.findByCdCantidadHaber", query = "SELECT c FROM CabeceraDetalle c WHERE c.cdCantidadHaber = :cdCantidadHaber")})
 public class CabeceraDetalle implements Serializable {
@@ -41,6 +41,14 @@ public class CabeceraDetalle implements Serializable {
     @Size(min = 1, max = 5)
     @Column(name = "CD_CODIGO")
     private String cdCodigo;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 5)
+    @Column(name = "CC_NUMERO")
+    private String ccNumero;
+    @Size(max = 3)
+    @Column(name = "C_CODIGO")
+    private String cCodigo;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @NotNull
@@ -50,12 +58,6 @@ public class CabeceraDetalle implements Serializable {
     @NotNull
     @Column(name = "CD_CANTIDAD_HABER")
     private BigDecimal cdCantidadHaber;
-    @JoinColumn(name = "CC_NUMERO", referencedColumnName = "CC_NUMERO")
-    @ManyToOne(optional = false)
-    private ComprobanteCabecera ccNumero;
-    @JoinColumn(name = "C_CODIGO", referencedColumnName = "C_CODIGO")
-    @ManyToOne
-    private Cuenta cCodigo;
 
     public CabeceraDetalle() {
     }
@@ -64,8 +66,9 @@ public class CabeceraDetalle implements Serializable {
         this.cdCodigo = cdCodigo;
     }
 
-    public CabeceraDetalle(String cdCodigo, BigDecimal cdCantidadDebe, BigDecimal cdCantidadHaber) {
+    public CabeceraDetalle(String cdCodigo, String ccNumero, BigDecimal cdCantidadDebe, BigDecimal cdCantidadHaber) {
         this.cdCodigo = cdCodigo;
+        this.ccNumero = ccNumero;
         this.cdCantidadDebe = cdCantidadDebe;
         this.cdCantidadHaber = cdCantidadHaber;
     }
@@ -76,6 +79,22 @@ public class CabeceraDetalle implements Serializable {
 
     public void setCdCodigo(String cdCodigo) {
         this.cdCodigo = cdCodigo;
+    }
+
+    public String getCcNumero() {
+        return ccNumero;
+    }
+
+    public void setCcNumero(String ccNumero) {
+        this.ccNumero = ccNumero;
+    }
+
+    public String getCCodigo() {
+        return cCodigo;
+    }
+
+    public void setCCodigo(String cCodigo) {
+        this.cCodigo = cCodigo;
     }
 
     public BigDecimal getCdCantidadDebe() {
@@ -92,22 +111,6 @@ public class CabeceraDetalle implements Serializable {
 
     public void setCdCantidadHaber(BigDecimal cdCantidadHaber) {
         this.cdCantidadHaber = cdCantidadHaber;
-    }
-
-    public ComprobanteCabecera getCcNumero() {
-        return ccNumero;
-    }
-
-    public void setCcNumero(ComprobanteCabecera ccNumero) {
-        this.ccNumero = ccNumero;
-    }
-
-    public Cuenta getCCodigo() {
-        return cCodigo;
-    }
-
-    public void setCCodigo(Cuenta cCodigo) {
-        this.cCodigo = cCodigo;
     }
 
     @Override

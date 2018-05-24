@@ -5,8 +5,12 @@
  */
 package Comun;
 
+import Contabilidad.Bean_ContabilidadLocal;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -30,7 +34,8 @@ public class serv_usuarios extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     String ls_mensaje = "";
-
+    @EJB
+    Bean_PermisosLocal beanPermisos;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -59,34 +64,18 @@ public class serv_usuarios extends HttpServlet {
                 ls_contrasenia2 = request.getParameter("contrasenia2");
                 if (!ls_contrasenia.equals(ls_contrasenia2)) {
                     ls_mensaje = "Las contrasenias deben coincidir!";
-                } else {
-                    /*
-                
-                
-                EntityManagerFactory emfactory = Persistence.createEntityManagerFactory("/*persistencia");
-                EntityManager entitymanager = emfactory.createEntityManager();
-                try {
-                    entitymanager.getTransaction().begin();
-                    objeto_usuario usuario = new objeto_usuario();
-                    usuario.setNombres(ls_nombres);
-                    usuario.setApellidos(ls_apellidos);
-                    usuario.setUsuario(ls_usuario);
-                    usuario.setContrasenia(ls_contrasenia);
-                    usuario.setPermisos("0");
+                } 
+                else
+                {
+                    if(beanPermisos.InsertarUsuario(ls_nombres, ls_apellidos, ls_usuario, ls_contrasenia)==1)
+                    {
+                        ls_mensaje="Usuario Ingresado";
+                        
+                    }
                     
-                    entitymanager.persist(usuario);
-                    entitymanager.getTransaction().commit();
-
-                    ls_mensaje += ("Se insertó correctamente");
-                    is_pantalla = desplegarPantallaUsuarios("","","","","");
-                } catch (Exception ex) {
-                    entitymanager.getTransaction().commit();
-                    ls_mensaje = "inserción incorrecta";
-                }
-                entitymanager.close();
-                emfactory.close();
-                
-                     */
+                    else
+                        ls_mensaje="Error de Ingreso";
+                    
                 }
                 is_pantalla = desplegarPantallaUsuarios("", "", "", "", "") + ls_mensaje;
             }
@@ -97,10 +86,13 @@ public class serv_usuarios extends HttpServlet {
 
     public String desplegarPantallaUsuarios(String ls_nombres, String ls_apellidos, String ls_usuario, String ls_contrasenia, String ls_contrasenia2) {
         String ls_pantalla = "";
+        List lista = new ArrayList<String>();
+        lista = beanPermisos.ExtraerUsuarios();
         ls_pantalla += ("<!DOCTYPE html>");
         ls_pantalla += ("<html>");
         ls_pantalla += ("<head>");
         ls_pantalla += ("<title>Servlet serv_usuarios</title>");
+        ls_pantalla += "<link rel='stylesheet' type='text/css' href='estilos1.css'>";
         ls_pantalla += ("</head>");
         ls_pantalla += ("<body>");
         ls_pantalla += ("<h1>Nuevo Usuario</h1>");
@@ -117,6 +109,8 @@ public class serv_usuarios extends HttpServlet {
         ls_pantalla += ("<br>");
         ls_pantalla += ("<input type='submit' value='Insertar' name='boton' ></input>");
         ls_pantalla += "</form>";
+        ls_pantalla += "</br>";
+        ls_pantalla += ("<a href='http://localhost:8080/proyecto_distribuidas/serv_comun'><input type='submit' value='Regresar' name='boton' ></a>");
         ls_pantalla += ("</body>");
         ls_pantalla += ("</html>");
         return ls_pantalla;

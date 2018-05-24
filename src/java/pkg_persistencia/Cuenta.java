@@ -6,21 +6,16 @@
 package pkg_persistencia;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -32,6 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Cuenta.findAll", query = "SELECT c FROM Cuenta c")
     , @NamedQuery(name = "Cuenta.findByCCodigo", query = "SELECT c FROM Cuenta c WHERE c.cCodigo = :cCodigo")
+    , @NamedQuery(name = "Cuenta.findByTpCodigo", query = "SELECT c FROM Cuenta c WHERE c.tpCodigo = :tpCodigo")
     , @NamedQuery(name = "Cuenta.findByCNombre", query = "SELECT c FROM Cuenta c WHERE c.cNombre = :cNombre")})
 public class Cuenta implements Serializable {
 
@@ -42,14 +38,12 @@ public class Cuenta implements Serializable {
     @Size(min = 1, max = 3)
     @Column(name = "C_CODIGO")
     private String cCodigo;
+    @Size(max = 3)
+    @Column(name = "TP_CODIGO")
+    private String tpCodigo;
     @Size(max = 100)
     @Column(name = "C_NOMBRE")
     private String cNombre;
-    @JoinColumn(name = "TP_CODIGO", referencedColumnName = "TP_CODIGO")
-    @ManyToOne
-    private TipoCuenta tpCodigo;
-    @OneToMany(mappedBy = "cCodigo")
-    private List<CabeceraDetalle> cabeceraDetalleList;
 
     public Cuenta() {
     }
@@ -66,29 +60,20 @@ public class Cuenta implements Serializable {
         this.cCodigo = cCodigo;
     }
 
+    public String getTpCodigo() {
+        return tpCodigo;
+    }
+
+    public void setTpCodigo(String tpCodigo) {
+        this.tpCodigo = tpCodigo;
+    }
+
     public String getCNombre() {
         return cNombre;
     }
 
     public void setCNombre(String cNombre) {
         this.cNombre = cNombre;
-    }
-
-    public TipoCuenta getTpCodigo() {
-        return tpCodigo;
-    }
-
-    public void setTpCodigo(TipoCuenta tpCodigo) {
-        this.tpCodigo = tpCodigo;
-    }
-
-    @XmlTransient
-    public List<CabeceraDetalle> getCabeceraDetalleList() {
-        return cabeceraDetalleList;
-    }
-
-    public void setCabeceraDetalleList(List<CabeceraDetalle> cabeceraDetalleList) {
-        this.cabeceraDetalleList = cabeceraDetalleList;
     }
 
     @Override

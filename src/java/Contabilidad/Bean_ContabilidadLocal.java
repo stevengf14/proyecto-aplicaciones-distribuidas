@@ -19,6 +19,15 @@ public interface Bean_ContabilidadLocal {
 
     public String BuscarCuenta(String nombre);
 
+    public String BuscarTipoCuenta(String nombre);
+    public List ExtraerTipoCodigos();
+    public int ModificarTipoCuenta(String nombre, String cambio);
+    public int EliminarTipoCuenta(String nombre);
+    public boolean verificarTipoCuenta(String nombre);
+    
+    public boolean verificarCuenta(String nombre);
+    public int InsertarCuenta(String nombre, String tp_nombre);
     public List ExtraerCodigos();
-
+    public int ModificarCuenta(String nombre);
+    public int Eliminaruenta(String nombre);
 }

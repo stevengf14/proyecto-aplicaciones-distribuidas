@@ -6,24 +6,19 @@
 package pkg_persistencia;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -57,13 +52,10 @@ public class Empleado implements Serializable {
     @Column(name = "EMP_FECHA_INGRESO")
     @Temporal(TemporalType.TIMESTAMP)
     private Date empFechaIngreso;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Column(name = "EMP_EMP_SUELDO")
-    private BigDecimal empEmpSueldo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empCedula")
-    private List<NominaCabecera> nominaCabeceraList;
+    private double empEmpSueldo;
 
     public Empleado() {
     }
@@ -72,7 +64,7 @@ public class Empleado implements Serializable {
         this.empCedula = empCedula;
     }
 
-    public Empleado(String empCedula, String empNombre, Date empFechaIngreso, BigDecimal empEmpSueldo) {
+    public Empleado(String empCedula, String empNombre, Date empFechaIngreso, double empEmpSueldo) {
         this.empCedula = empCedula;
         this.empNombre = empNombre;
         this.empFechaIngreso = empFechaIngreso;
@@ -103,21 +95,12 @@ public class Empleado implements Serializable {
         this.empFechaIngreso = empFechaIngreso;
     }
 
-    public BigDecimal getEmpEmpSueldo() {
+    public double getEmpEmpSueldo() {
         return empEmpSueldo;
     }
 
-    public void setEmpEmpSueldo(BigDecimal empEmpSueldo) {
+    public void setEmpEmpSueldo(double empEmpSueldo) {
         this.empEmpSueldo = empEmpSueldo;
-    }
-
-    @XmlTransient
-    public List<NominaCabecera> getNominaCabeceraList() {
-        return nominaCabeceraList;
-    }
-
-    public void setNominaCabeceraList(List<NominaCabecera> nominaCabeceraList) {
-        this.nominaCabeceraList = nominaCabeceraList;
     }
 
     @Override

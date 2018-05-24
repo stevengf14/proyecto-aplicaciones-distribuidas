@@ -8,6 +8,7 @@ package Comun;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -57,7 +58,19 @@ public class serv_permisos_usuarios extends HttpServlet {
         if (is_boton != null && is_boton != "") {
             usuario=request.getParameter("usuario");
             if (is_boton.equals("Guardar")) {
-                ls_mensaje=bean_permisos.asignar_permiso(request.getParameter("check_cont"),request.getParameter("check_biblioteca"), request.getParameter("check_nomina"), request.getParameter("check_usuarios"));
+                String perm=bean_permisos.asignar_permiso(request.getParameter("check_cont"),request.getParameter("check_biblioteca"), request.getParameter("check_nomina"), request.getParameter("check_usuarios"));
+                if(bean_permisos.ModificarPermisos(usuario,perm)==1)
+                {
+                    ls_mensaje="Permisos Modificados";
+                    //if(usuario.equals(bean_permisos.UsuarioActivo()))
+                        bean_permisos.InsertarUsuarioActivo(usuario);
+                    //else
+                      //  ls_mensaje="holaa";
+                }
+                else
+                    ls_mensaje="Error";
+                
+                
                 
             }
                 is_pantalla = desplegarPantallaUsuarios() + ls_mensaje;
@@ -69,19 +82,22 @@ public class serv_permisos_usuarios extends HttpServlet {
     
     public String desplegarPantallaUsuarios() {
         String ls_pantalla = "";
+        List lista = new ArrayList<String>();
+        lista = bean_permisos.ExtraerUsuarios();
         ls_pantalla += ("<!DOCTYPE html>");
         ls_pantalla += ("<html>");
         ls_pantalla += ("<head>");
         ls_pantalla += ("<title>Servlet serv_permisos_usuarios</title>");
+        ls_pantalla += "<link rel='stylesheet' type='text/css' href='estilos1.css'>";
         ls_pantalla += ("</head>");
         ls_pantalla += ("<body>");
         ls_pantalla += ("<h1>Permisos de Usuarios</h1>");
         ls_pantalla += ("<form action='serv_permisos_usuarios' method='post'>");
         ls_pantalla += ("Seleccione usuario:</br>");
         ls_pantalla += ("<select name='usuario'>");
-        for(int i=0;i<5;i++)
+        for(int i=0;i<lista.size();i++)
         {
-            ls_pantalla += ("<option value="+i+">"+i+"</option>");
+            ls_pantalla += ("<option value="+lista.get(i)+">"+lista.get(i)+"</option>");
         }
         ls_pantalla += ("</select>");
         ls_pantalla += ("</br>");
@@ -91,7 +107,7 @@ public class serv_permisos_usuarios extends HttpServlet {
         ls_pantalla += ("<input type='checkbox' name='check_usuarios' id='nomina' value='usuarios'>Usuarios</input><br>");
         ls_pantalla += ("<input type='submit' value='Guardar' name='boton' ></input>");
         ls_pantalla += "</form>";
-        ls_pantalla += ("<a href='http://localhost:8080/distribuidas/serv_menu'><input type='submit' value='Regresar' name='boton' ></a>");
+        ls_pantalla += ("<a href='http://localhost:8080/proyecto_distribuidas/serv_menu'><input type='submit' value='Regresar' name='boton' ></a>");
         ls_pantalla += ("</body>");
         ls_pantalla += ("</html>");
         return ls_pantalla;

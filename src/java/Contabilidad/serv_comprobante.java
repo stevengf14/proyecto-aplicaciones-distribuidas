@@ -54,6 +54,7 @@ public class serv_comprobante extends HttpServlet {
             fecha = request.getParameter("fecha");
             if (is_boton.equals("Insertar")) {
                 ls_mensaje = observaciones + " Insertado a la cuenta " + cabecera + " y tipo de cuenta: " + fecha;
+                
                 is_pantalla = desplegarPantallaCabecera("");
             }
             if (is_boton.equals("Modificar")) {

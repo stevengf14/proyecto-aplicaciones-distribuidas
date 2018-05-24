@@ -41,14 +41,14 @@ public class serv_tipo_cuenta extends HttpServlet {
     @EJB
     Bean_ContabilidadLocal beanContabilidad;
     String ls_mensaje = "";
-
+    String aux="";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         //try (PrintWriter out = response.getWriter()) {
         String is_pantalla = "";
-
+        String mostrar = "none";
         String is_boton = "";
         String cuenta = "";
         String nombre = "";
@@ -56,44 +56,76 @@ public class serv_tipo_cuenta extends HttpServlet {
         is_boton = request.getParameter("boton");
 
         if (is_boton == null || is_boton == "") {
-            is_pantalla = desplegarPantallaTipoCuenta("","none");
+            is_pantalla = desplegarPantallaTipoCuenta("", "none","");
         }
 
         if (is_boton != null && is_boton != "") {
             nombre = request.getParameter("nombre");
             cuenta = request.getParameter("cuenta");
             if (is_boton.equals("Insertar")) {
-                if (beanContabilidad.InsertarTipoCuenta(nombre) == 1) {
-                    ls_mensaje = "Ingreso correcto";
+                if (nombre.equals("")) {
+                    ls_mensaje = "Ingrese un nombre de Tipo de Cuenta";
                 } else {
-                    ls_mensaje = "Error de Ingreso";
+                    if (beanContabilidad.verificarTipoCuenta(nombre) != false) {
+                        ls_mensaje = "El tipo de Cuenta ya existe";
+                    } else {
+
+                        if (beanContabilidad.InsertarTipoCuenta(nombre) == 1) {
+                            ls_mensaje = "Ingreso correcto";
+                        } else {
+                            ls_mensaje = "Error de Ingreso";
+                        }
+                    }
                 }
+                is_pantalla = desplegarPantallaTipoCuenta("", "none","");
             }
             if (is_boton.equals("Modificar")) {
-                ls_mensaje = beanContabilidad.BuscarCuenta(busqueda);
+                aux=busqueda;
+                is_pantalla = desplegarPantallaTipoCuenta(busqueda, "block",aux);
+                
+                
             }
 
             if (is_boton.equals("Guardar")) {
-                ls_mensaje = "Guardar";
+                //ls_mensaje=String.valueOf(beanContabilidad.ModificarTipoCuenta(aux,busqueda));
+                if (beanContabilidad.ModificarTipoCuenta(aux,busqueda) == 1) {
+                    is_pantalla = desplegarPantallaTipoCuenta("", "block","");
+                    ls_mensaje = "Modificación Correcta";
+
+                } else {
+                    is_pantalla = desplegarPantallaTipoCuenta("", "none",aux);
+                    ls_mensaje = "Error de Modificación";
+                }
             }
             if (is_boton.equals("Buscar")) {
-                is_pantalla = desplegarPantallaTipoCuenta("","block");
+
+                is_pantalla = desplegarPantallaTipoCuenta("", "block","");
+                mostrar = "block";
             }
             if (is_boton.equals("Eliminar")) {
-                ls_mensaje = "Eliminar";
+                if (beanContabilidad.EliminarTipoCuenta(nombre) == 1) {
+                    ls_mensaje = "Tipo de Cuenta eliminada";
+                    is_pantalla = desplegarPantallaTipoCuenta("", "none","");
+                } else {
+                    ls_mensaje = "Error de eliminación";
+                    is_pantalla = desplegarPantallaTipoCuenta("", "block","");
+                }
             }
             if (is_boton.equals("Regresar")) {
                 ls_mensaje = "Regresar";
             }
-            is_pantalla = desplegarPantallaTipoCuenta("","block") + ls_mensaje;
-        }
+            //is_pantalla = desplegarPantallaTipoCuenta("", mostrar) + ls_mensaje;
 
+        }
+        is_pantalla += ls_mensaje;
         out.println(is_pantalla);
+        mostrar = "none";
+        ls_mensaje = "";
     }
 
-    public String desplegarPantallaTipoCuenta(String ls_nombre, String mostrar) {
+    public String desplegarPantallaTipoCuenta(String ls_nombre, String mostrar, String selected) {
         List lista = new ArrayList<String>();
-        lista = beanContabilidad.ExtraerCodigos();
+        lista = beanContabilidad.ExtraerTipoCodigos();
         String ls_pantalla = "";
         ls_pantalla += ("<!DOCTYPE html>");
         ls_pantalla += ("<html>");
@@ -106,7 +138,7 @@ public class serv_tipo_cuenta extends HttpServlet {
                 + "document.getElementById('cuenta').style.display = 'block';}"
                 + "function ocultar(){"
                 + "document.getElementById('ver').style.display = 'none';}"
-                +"</script>";
+                + "</script>";
         ls_pantalla += ("</head>");
         ls_pantalla += ("<body>");
         ls_pantalla += ("<h1>Tipo de Cuenta</h1>");
@@ -114,16 +146,21 @@ public class serv_tipo_cuenta extends HttpServlet {
         ls_pantalla += ("Nombre:<input type='text' name='nombre'" + " value='" + ls_nombre + "'></input>");
         //ls_pantalla += ("<br>");
         //ls_pantalla += (":</br>");
-        ls_pantalla += ("<select id='cuenta' name='cuenta' style='display:+"+mostrar+";>");
+
+        ls_pantalla += ("<select id='cuenta' name='cuenta' style='display:" + mostrar + ";>");
         for (int i = 0; i < lista.size(); i++) {
-            ls_pantalla += ("<option  value='" + lista.get(i) + "'>" + lista.get(i) + "</option>");
+            if(selected.equals(lista.get(i)))
+                ls_pantalla += ("<option  value='" + lista.get(i) + "' selected>" + lista.get(i) + "</option>");
+            else
+                ls_pantalla += ("<option  value='" + lista.get(i) + "' >" + lista.get(i) + "</option>");
         }
         ls_pantalla += ("</select>");
         ls_pantalla += ("</br>");
         ls_pantalla += ("<input type='submit' value='Insertar' name='boton' ></input>");
         ls_pantalla += ("<input type='submit' value='Buscar' name='boton' ></input>");
         ls_pantalla += "</br>";
-        ls_pantalla += "<div id='botones_edicion' style='display:+"+mostrar+";'>";
+        ls_pantalla += "</br>";
+        ls_pantalla += "<div id='botones_edicion' style='display:" + mostrar + ";'>";
         ls_pantalla += ("<input type='submit' value='Guardar' name='boton' ></input>");
         ls_pantalla += ("<input type='submit' value='Modificar' name='boton' ></input>");
         ls_pantalla += ("<input type='submit' value='Eliminar' name='boton' ></input>");
