@@ -5,6 +5,7 @@
  */
 package Contabilidad;
 
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -13,6 +14,7 @@ import javax.ejb.Local;
  */
 @Local
 public interface Bean_ContabilidadLocal {
-    public void InsertarTipoCuenta(String nombre);
-    public String ExtraerCodigoCuenta(String nombre);
+    public int InsertarTipoCuenta(String nombre);
+    public String BuscarCuenta(String nombre);
+    public List ExtraerCodigos();
 }

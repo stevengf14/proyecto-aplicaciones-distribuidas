@@ -8,12 +8,19 @@ package Contabilidad;
 import Comun.Bean_PermisosLocal;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.EJB;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import pkg_persistencia.TipoCuenta;
 
 /**
  *
@@ -33,7 +40,8 @@ public class serv_tipo_cuenta extends HttpServlet {
      */
     @EJB
     Bean_ContabilidadLocal beanContabilidad;
-    String ls_mensaje="";
+    String ls_mensaje = "";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -42,8 +50,9 @@ public class serv_tipo_cuenta extends HttpServlet {
         String is_pantalla = "";
 
         String is_boton = "";
-        String cuenta="";
-        String nombre="";
+        String cuenta = "";
+        String nombre = "";
+        String busqueda= request.getParameter("cuenta");
         is_boton = request.getParameter("boton");
 
         if (is_boton == null || is_boton == "") {
@@ -51,34 +60,55 @@ public class serv_tipo_cuenta extends HttpServlet {
         }
 
         if (is_boton != null && is_boton != "") {
-            nombre=request.getParameter("nombre");
-            cuenta=request.getParameter("cuenta");
+            nombre = request.getParameter("nombre");
+            cuenta = request.getParameter("cuenta");
             if (is_boton.equals("Insertar")) {
-                beanContabilidad.InsertarTipoCuenta(nombre);
+                if(beanContabilidad.InsertarTipoCuenta(nombre)==1)
+                    ls_mensaje="Ingreso correcto";
+                else
+                    ls_mensaje="Error de Ingreso";
             }
             if (is_boton.equals("Modificar")) {
-                ls_mensaje=beanContabilidad.ExtraerCodigoCuenta(nombre);
-            }
-            if (is_boton.equals("Guardar")) {
-                ls_mensaje="Guardar";
-            }
-            if (is_boton.equals("Buscar")) {
-                ls_mensaje="Buscar";
-            }
-            if (is_boton.equals("Eliminar")) {
-                ls_mensaje="Eliminar";
-            }
-            if (is_boton.equals("Regresar")) {
-                ls_mensaje="Regresar";
-            }
-                is_pantalla = desplegarPantallaTipoCuenta("") + ls_mensaje;
+                ls_mensaje=beanContabilidad.BuscarCuenta(busqueda);
             }
 
-        
+            if (is_boton.equals("Guardar")) {
+                ls_mensaje = "Guardar";
+            }
+            if (is_boton.equals("Buscar")) {
+                String resultado = "";
+                String val = "1";
+                EntityManagerFactory factory = Persistence.createEntityManagerFactory("proyecto_distribuidasPU");
+                EntityManager em1 = factory.createEntityManager();
+                pkg_persistencia.TipoCuenta tc = new pkg_persistencia.TipoCuenta();
+                
+                try {
+                    tc = em1.find(TipoCuenta.class, "2");
+                    resultado = tc.getTpNombre();
+                } catch (Exception ex) {
+                    resultado = ex.getMessage();
+                }
+                em1.close();
+                factory.close();
+                ls_mensaje = resultado;
+            }
+            if (is_boton.equals("Eliminar")) {
+                ls_mensaje = "Eliminar";
+            }
+            if (is_boton.equals("Regresar")) {
+                ls_mensaje = "Regresar";
+            }
+            is_pantalla = desplegarPantallaTipoCuenta("") + ls_mensaje;
+        }
+
         out.println(is_pantalla);
     }
     
+    
+
     public String desplegarPantallaTipoCuenta(String ls_nombre) {
+        List lista = new ArrayList<String>();
+        lista=beanContabilidad.ExtraerCodigos();
         String ls_pantalla = "";
         ls_pantalla += ("<!DOCTYPE html>");
         ls_pantalla += ("<html>");
@@ -92,23 +122,27 @@ public class serv_tipo_cuenta extends HttpServlet {
         //ls_pantalla += ("<br>");
         //ls_pantalla += (":</br>");
         ls_pantalla += ("<select id='cuenta' name='cuenta'>");
-        for(int i=0;i<5;i++)
-        {
-            ls_pantalla += ("<option  value=cuenta_"+i+">Cuenta No. "+i+"</option>");
+        for (int i = 0; i < lista.size(); i++) {
+            ls_pantalla += ("<option  value='"+lista.get(i)+"'>" + lista.get(i) + "</option>");
         }
         ls_pantalla += ("</select>");
         ls_pantalla += ("</br>");
-            ls_pantalla += ("<input type='submit' value='Insertar' name='boton' ></input>");
+        ls_pantalla += ("<input type='submit' value='Insertar' name='boton' ></input>");
+        ls_pantalla += ("<input type='submit' value='Buscar' name='boton' ></input>");
+        ls_pantalla += "</br>";
+        ls_pantalla += "<div id='botones_edicion' style='display:none;'>";
         ls_pantalla += ("<input type='submit' value='Guardar' name='boton' ></input>");
         ls_pantalla += ("<input type='submit' value='Modificar' name='boton' ></input>");
-        ls_pantalla += ("<input type='submit' value='Buscar' name='boton' ></input>");
         ls_pantalla += ("<input type='submit' value='Eliminar' name='boton' ></input>");
+        ls_pantalla += ("</div>");
         ls_pantalla += "</form>";
+        ls_pantalla += "</br>";
         ls_pantalla += ("<a href='http://localhost:8080/distribuidas/serv_Menu_Contabilidad'><input type='submit' value='Regresar' name='boton' ></a>");
         ls_pantalla += ("</body>");
         ls_pantalla += ("</html>");
         return ls_pantalla;
     }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

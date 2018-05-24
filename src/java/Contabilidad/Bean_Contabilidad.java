@@ -21,52 +21,63 @@ import pkg_persistencia.TipoCuenta;
 @Stateful
 public class Bean_Contabilidad implements Bean_ContabilidadLocal {
 
-    public void InsertarTipoCuenta(String nombre) {
+    public int InsertarTipoCuenta(String nombre) {
+        int retorno=0;
+        List<String> lista= new ArrayList<String>();
+        lista=ExtraerCodigos();
+                EntityManagerFactory factory = Persistence.createEntityManagerFactory("proyecto_distribuidasPU");
+                EntityManager em1 = factory.createEntityManager();
+                //pkg_persistencia.TipoCuenta tc = new pkg_persistencia.TipoCuenta();
+                TipoCuenta tc= new TipoCuenta(String.valueOf(lista.size()+1));
+                tc.setTpNombre(nombre);
+                try {
+                    em1.getTransaction().begin();
+                    em1.persist(tc);
+                    em1.getTransaction().commit();
+                    retorno=1;
+                } catch (Exception ex) {
+                    retorno=0;
+                }
 
-        String resultado="";
-        EntityManagerFactory factory=Persistence.createEntityManagerFactory("proyecto_distribuidasPU");
-        EntityManager em1=factory.createEntityManager();   
-        pkg_persistencia.TipoCuenta tc =new pkg_persistencia.TipoCuenta();
-        tc.setTpCodigo("2");
-        tc.setTpNombre(nombre);
-        try
-           {   
-               
-               em1.getTransaction().begin();
-               em1.persist(tc);
-               em1.getTransaction().commit();
-               
-           }
-        catch (Exception ex)
-           {          
-               resultado=ex.getMessage();
-           }
-        
-         em1.close();
-         factory.close();
+                em1.close();
+                factory.close();
+                return retorno;
     }
-
-    public String ExtraerCodigoCuenta(String nombre) {
-        String resultado="";
-        EntityManagerFactory factory=Persistence.createEntityManagerFactory("proyecto_distribuidasPU");
-        EntityManager em1=factory.createEntityManager();   
-        pkg_persistencia.TipoCuenta tc =new pkg_persistencia.TipoCuenta();
-        try
-           {   
-               tc=em1.find(TipoCuenta.class,"1");
-               resultado=tc.getTpNombre();
-               /*em1.getTransaction().begin();
-               em1.persist(tc);
-               em1.getTransaction().commit();*/
-               
-           }
-        catch (Exception ex)
-           {          
-               resultado=ex.getMessage();
-           }
-        
-         em1.close();
-         factory.close();
-        return resultado;
+    public List ExtraerCodigos()
+    {
+        List<String> lista= new ArrayList<String>();
+        EntityManagerFactory factory = Persistence.createEntityManagerFactory("proyecto_distribuidasPU");
+                EntityManager em1 = factory.createEntityManager();
+                try
+                {
+                    Query q = em1.createNativeQuery("SELECT TP_NOMBRE FROM TIPO_CUENTA");
+                    
+                    lista=q.getResultList();
+                    //ls_mensaje=String.valueOf(lista.size());
+                }
+                catch (Exception ex) {
+                    //ls_mensaje = ex.getMessage();
+                }
+                em1.close();
+                factory.close();
+                return lista;
+    }
+    public String BuscarCuenta(String nombre) {
+        List<String> lista= new ArrayList<String>();
+        //String retorno="";
+        EntityManagerFactory factory = Persistence.createEntityManagerFactory("proyecto_distribuidasPU");
+                EntityManager em1 = factory.createEntityManager();
+                try
+                {
+                    Query q = em1.createNativeQuery("SELECT TP_CODIGO FROM TIPO_CUENTA WHERE TP_NOMBRE='"+nombre+"'");
+                    lista=q.getResultList();
+                    //ls_mensaje=String.valueOf(lista.size());
+                }
+                catch (Exception ex) {
+                    //ls_mensaje = ex.getMessage();
+                }
+                em1.close();
+                factory.close();
+                return lista.get(0);
     }
 }
