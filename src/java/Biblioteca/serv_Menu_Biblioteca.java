@@ -40,25 +40,6 @@ public class serv_Menu_Biblioteca extends HttpServlet {
         if (is_boton == null || is_boton == "") {
             is_pantalla = desplegarPantallaMenu();
         }
-
-        if (is_boton != null && is_boton != "") {
-
-            if (is_boton.equals("Lista Autores")) {
-                is_pantalla = desplegarPantallaMenu() + ("<p style=\"color: #F6DAD4\">Lista de Autores</p>");
-            }
-            if (is_boton.equals("Lista Libros")) {
-                is_pantalla = desplegarPantallaMenu() + ("<p style=\"color: #F6DAD4\">Lista de libros disponibles</p>");
-            }
-            if (is_boton.equals("Prestamo")) {
-                is_pantalla = desplegarPantallaMenu() + ("<p style=\"color: #F6DAD4\">Prestamos</p>");
-            }
-            if (is_boton.equals("Reportes")) {
-                is_pantalla = desplegarPantallaMenu() + ("<p style=\"color: #F6DAD4\">Reportes</p>");
-            }
-            if (is_boton.equals("Regresar")) {
-                is_pantalla = desplegarPantallaMenu() + ("<p style=\"color: #F6DAD4\">Regresar</p>");
-            }
-        }
         out.println(is_pantalla);
     }
 
@@ -68,31 +49,31 @@ public class serv_Menu_Biblioteca extends HttpServlet {
         ls_pantalla += ("<html>");
         ls_pantalla += ("<head>");
         ls_pantalla += ("<title>Servlet serv_Menu_Contabilidad</title>");
-        ls_pantalla += "<style type='text/css'>";
-        ls_pantalla += "";//Aqui va el css
+        ls_pantalla += "<link rel='stylesheet' type='text/css' href='estilos1.css'>";
         ls_pantalla += "</style>";
         ls_pantalla += ("</head>");
         ls_pantalla += ("<body>");
-        ls_pantalla += ("<form action='serv_Menu_Biblioteca' method='post'>");
-        ls_pantalla += "<div class='container'>";
+        ls_pantalla += ("<div action='serv_Menu_Biblioteca' method='post'>");
+        ls_pantalla += "<center><div class='container'>";
         ls_pantalla += "<h1>Menú</h1>";
-        ls_pantalla += "<li>";
-        ls_pantalla += "<input type='submit' name='boton' value='Lista Autores'><a href='serv_crud_autores.java'></a></input>";
-        ls_pantalla += "</li>";
-        ls_pantalla += "<li>";
-        ls_pantalla += "<input type='submit' name='boton' value='Lista Libros'></input>";
-        ls_pantalla += "</li>";
-        ls_pantalla += "<li>";
-        ls_pantalla += "<input type='submit' name='boton' value='Prestamo'></input>";
-        ls_pantalla += "</li>";
-        ls_pantalla += "<li>";
-        ls_pantalla += ("<input type='submit' value='Reportes' name='boton' ></input>");
-        ls_pantalla += "</li>";
-        ls_pantalla += "<li>";
-        ls_pantalla += ("<input type='submit' value='Regresar' name='boton' ></input>");
-        ls_pantalla += "</li>";
+        ls_pantalla += "<table width='25%' border='0' align='center'>";
+        ls_pantalla += "<tr align='center'>";
+        ls_pantalla += "<td><a href='http://localhost:8080/proyecto_distribuidas/serv_autor'><input type='submit' name='boton' value='Lista Autores'></a>";
+        ls_pantalla += "</td></tr>";
+        ls_pantalla += "<tr align='center'>";
+        ls_pantalla += "<td><a href='http://localhost:8080/proyecto_distribuidas/serv_crud_libros'><input type='submit' name='boton' value='Lista Libros'></a>";
+        ls_pantalla += "</td></tr>";
+        ls_pantalla += "<tr align='center'>";
+        ls_pantalla += "<td><input type='submit' name='boton' value='Prestamo'></input>";
+        ls_pantalla += "</td></tr>";
+        ls_pantalla += "<tr align='center'>";
+        ls_pantalla += "<td><input type='submit' value='Reportes' name='boton' ></input>";
+        ls_pantalla += "</td></tr>";
+        ls_pantalla += "<tr align='center'>";
+        ls_pantalla += "<td><a href='http://localhost:8080/proyecto_distribuidas/serv_menu'><input type='submit' value='Regresar' name='boton' ></input>";
+        ls_pantalla += "</td></tr>";
+        ls_pantalla += "</center></div>";
         ls_pantalla += "</div>";
-        ls_pantalla += "</form>";
         ls_pantalla += ("</body>");
         ls_pantalla += ("</html>");
         return ls_pantalla;
@@ -100,7 +81,6 @@ public class serv_Menu_Biblioteca extends HttpServlet {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-
     /**
      * Handles the HTTP <code>GET</code> method.
      *

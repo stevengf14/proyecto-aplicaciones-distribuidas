@@ -132,11 +132,11 @@ public class Libro implements Serializable {
     public String toString() {
         return "Biblioteca.Libro[ libIsbn=" + libIsbn + " ]";
     }
-
+    
     @XmlTransient
     public List<PrestamoDetalle> getPrestamoDetalleList() {
         return prestamoDetalleList;
-    }
+}
 
     public void setPrestamoDetalleList(List<PrestamoDetalle> prestamoDetalleList) {
         this.prestamoDetalleList = prestamoDetalleList;

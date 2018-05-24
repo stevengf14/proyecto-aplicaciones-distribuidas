@@ -5,8 +5,12 @@
  */
 package Biblioteca;
 
+import Contabilidad.Bean_ContabilidadLocal;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import javax.ejb.EJB;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -25,6 +29,8 @@ public class serv_autores extends HttpServlet {
 
     String ls_mensaje = "";
     negocio_biblioteca nb = new negocio_biblioteca();
+    @EJB
+    Bean_BibliotecaLocal beanBiblioteca;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -39,16 +45,23 @@ public class serv_autores extends HttpServlet {
         ls_codigo = request.getParameter("codigo");
         ls_nombre = request.getParameter("nombre");
         ls_apellido = request.getParameter("apellido");
-        is_pantalla = desplegar_pantalla(ls_codigo, ls_nombre, ls_apellido);
+        is_pantalla = desplegar_pantalla("","","","block");
         out.println(is_pantalla);
     }
 
-    public String desplegar_pantalla(String codigo, String nombre, String apellido) {
-        String ls_pantalla = "";
+    public String desplegar_pantalla(String codigo, String nombre, String apellido,String mostrar) {
+        String ls_pantalla = "";                
         ls_pantalla += "<!DOCTYPE html>";
         ls_pantalla += "<html>";
         ls_pantalla += "<head>";
-        ls_pantalla += "<title>Servlet serv_menu_biblioteca</title>";
+        ls_pantalla += "<title>Servlet serv_menu_biblioteca</title>";        
+        ls_pantalla += "<script type=\"text/javascript\">"
+                + "function mostrar(){"
+                + "document.getElementById('botones_edicion').style.display = 'block';"
+                + "document.getElementById('cuenta').style.display = 'block';}"
+                + "function ocultar(){"
+                + "document.getElementById('ver').style.display = 'none';}"
+                +"</script>";
         ls_pantalla += "</head>";
         ls_pantalla += "<body>";
         ls_pantalla += "<h1>Tabla de Autores</h1>";
@@ -63,34 +76,18 @@ public class serv_autores extends HttpServlet {
         ls_pantalla += "</nav>";
         ls_pantalla += "</header>";
         ls_pantalla += "<form action='serv_autores' method='post'>";
-       ls_pantalla += "<table width='50%' border='1' align='center' id='tabla'>";
+        ls_pantalla += "<table width='50%' border='1' align='center' id='tabla'>";
         ls_pantalla += "<table width='50%' border='1' align='center' id='tabla'>";
         ls_pantalla += "<tr>";
         ls_pantalla += "<td class='primera_fila'>Código</td>";
         ls_pantalla += "<td class='primera_fila'>Nombre</td>";
         ls_pantalla += "<td class='primera_fila'>Apellido</td>";
         ls_pantalla += "</tr>";
-        //for (int i = 0; i < 5; i++) {
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("proyecto_distribuidasPU");
-        EntityManager em1 = factory.createEntityManager();
-        Autor ar = new Autor();
-        //try {
-        String aux = "1";
-        ar = em1.find(Autor.class, aux);
-        codigo = ar.getAuCodigo();
-        nombre = ar.getAuNombre();
-        apellido = ar.getAuApellido();
         ls_pantalla += "<tr>";
-        ls_pantalla += "<td><input type='text' size='20' class='centrado'  paddding=10px name='codigo' " + "value='" + codigo + "'></input></td>";
-        ls_pantalla += "<td><input type='text' size='20' class='centrado' paddding=10px name='nombre' " + "value='" + nombre + "'></input></td>";
-        ls_pantalla += "<td><input type='text' size='20' class='centrado' paddding=10px name='apellido' " + "value='" + apellido + "'></input></td>";
-        ls_pantalla += "</tr>";
-        //} catch (Exception ex) {
-        //    ls_pantalla+="ERROR: falla en la base de datos";
-        // }
-        em1.close();
-        factory.close();
-        //      }
+            ls_pantalla += "<td><input type='text' size='20' class='centrado'  paddding=10px name='codigo' " + "value='" + codigo + "'></input></td>";
+            ls_pantalla += "<td><input type='text' size='20' class='centrado' paddding=10px name='nombre' " + "value='" + nombre + "'></input></td>";
+            ls_pantalla += "<td><input type='text' size='20' class='centrado' paddding=10px name='apellido' " + "value='" + apellido + "'></input></td>";
+            ls_pantalla += "</tr>";
         ls_pantalla += "</table>";
         ls_pantalla += "<br>";
         ls_pantalla += "</form>";

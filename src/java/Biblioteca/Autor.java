@@ -67,7 +67,7 @@ public class Autor implements Serializable {
         this.auNombre = auNombre;
         this.auApellido = auApellido;
     }
-
+    
     public String getAuCodigo() {
         return auCodigo;
     }

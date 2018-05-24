@@ -14,7 +14,11 @@ import javax.ejb.Local;
  */
 @Local
 public interface Bean_ContabilidadLocal {
+
     public int InsertarTipoCuenta(String nombre);
+
     public String BuscarCuenta(String nombre);
+
     public List ExtraerCodigos();
+
 }

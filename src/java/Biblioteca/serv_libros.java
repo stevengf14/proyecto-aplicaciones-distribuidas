@@ -90,8 +90,7 @@ public class serv_libros extends HttpServlet {
         ls_pantalla += "<aside>";
         ls_pantalla += "<input type='submit' value='Insertar' name='boton'></input>";
         ls_pantalla += "<input type='submit' value='Eliminar' name='boton' ></input>";
-        ls_pantalla += "<input type='submit' value='Modificar' name='boton' onClick()='addRow(\'tabla\')'></input>";
-        ls_pantalla += "<button onclick=\"addRow(\'tabla\')\">Click me</button>";
+        ls_pantalla += "<input type='submit' value='Modificar' name='boton'></input>";
         ls_pantalla += "<input type='submit' value='Buscar' name='boton'></input>";
         ls_pantalla += "</aside>";
         ls_pantalla += "<br>";
