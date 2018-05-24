@@ -7,7 +7,9 @@ package Biblioteca;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -15,10 +17,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import pkg_persistencia.PrestamoDetalle;
 
 /**
  *
@@ -33,6 +38,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Libro.findByLibTitulo", query = "SELECT l FROM Libro l WHERE l.libTitulo = :libTitulo")
     , @NamedQuery(name = "Libro.findByLibValorPrestamo", query = "SELECT l FROM Libro l WHERE l.libValorPrestamo = :libValorPrestamo")})
 public class Libro implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "libIsbn")
+    private List<PrestamoDetalle> prestamoDetalleList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -123,6 +131,15 @@ public class Libro implements Serializable {
     @Override
     public String toString() {
         return "Biblioteca.Libro[ libIsbn=" + libIsbn + " ]";
+    }
+
+    @XmlTransient
+    public List<PrestamoDetalle> getPrestamoDetalleList() {
+        return prestamoDetalleList;
+    }
+
+    public void setPrestamoDetalleList(List<PrestamoDetalle> prestamoDetalleList) {
+        this.prestamoDetalleList = prestamoDetalleList;
     }
     
 }

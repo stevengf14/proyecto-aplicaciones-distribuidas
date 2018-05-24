@@ -31,4 +31,6 @@
         <property name="driverClass" value="oracle.jdbc.OracleDriver"/>
     </jdbc-connection-pool>
     <jdbc-resource enabled="true" jndi-name="java:app/distribuidas" object-type="user" pool-name="oracle-thin_XE_distribuidasPool"/>
+    <jdbc-resource enabled="true" jndi-name="java:app/distribuidas" object-type="user" pool-name="oracle-thin_XE_distribuidasPool"/>
+    <jdbc-resource enabled="true" jndi-name="java:app/distribuidas" object-type="user" pool-name="oracle-thin_XE_distribuidasPool"/>
 </resources>
