@@ -73,9 +73,8 @@ public class serv_Menu_Contabilidad extends HttpServlet {
         ls_pantalla += ("<html>");
         ls_pantalla += ("<head>");
         ls_pantalla += ("<title>Servlet serv_Menu_Contabilidad</title>");
-        ls_pantalla += "<style type='text/css'>";
-        ls_pantalla += "";//Aqui va el css
-        ls_pantalla += "</style>";
+        ls_pantalla += "<link rel='stylesheet' type='text/css' href='estilos1.css'>";
+        
         ls_pantalla += ("</head>");
         ls_pantalla += ("<body>");
         ls_pantalla += "<h1>Menú</h1>";
