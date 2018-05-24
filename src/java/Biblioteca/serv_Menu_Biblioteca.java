@@ -58,7 +58,7 @@ public class serv_Menu_Biblioteca extends HttpServlet {
         ls_pantalla += "<h1>Menú</h1>";
         ls_pantalla += "<table width='25%' border='0' align='center'>";
         ls_pantalla += "<tr align='center'>";
-        ls_pantalla += "<td><a href='http://localhost:8080/proyecto_distribuidas/serv_autor'><input type='submit' name='boton' value='Lista Autores'></a>";
+        ls_pantalla += "<td><a href='http://localhost:8080/proyecto_distribuidas/serv_lista_autores'><input type='submit' name='boton' value='Lista Autores'></a>";
         ls_pantalla += "</td></tr>";
         ls_pantalla += "<tr align='center'>";
         ls_pantalla += "<td><a href='http://localhost:8080/proyecto_distribuidas/serv_crud_libros'><input type='submit' name='boton' value='Lista Libros'></a>";

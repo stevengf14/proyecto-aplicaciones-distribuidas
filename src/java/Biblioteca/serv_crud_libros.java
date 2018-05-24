@@ -69,7 +69,7 @@ public class serv_crud_libros extends HttpServlet {
                 EntityManager em1 = factory.createEntityManager();
                 Libro pr = new Libro(ls_isbn);
                 pr.setLibTitulo(ls_titulo);
-                //pr.setAuCodigo(lst_autor);
+                pr.setAuCodigo(ls_autor);
                 pr.setLibValorPrestamo(ls_valor_prestamo);
                 //try {
                     em1.getTransaction().begin();
@@ -125,7 +125,7 @@ public class serv_crud_libros extends HttpServlet {
         ls_pantalla += "<title>Servlet serv_menu_biblioteca</title>";
         ls_pantalla += "<link rel='stylesheet' type='text/css' href='estilos1.css'>";
         ls_pantalla += "</head>";
-        ls_pantalla += "<div action='serv_crud_libros' method='post'>";
+        ls_pantalla += "<form action='serv_crud_libros' method='post'>";
         ls_pantalla += "<h1>Tabla de Libros disponibles</h1>";
         ls_pantalla += "<table width='50%' border='0' align='center'>";
         ls_pantalla += "<tr>";
@@ -161,9 +161,9 @@ public class serv_crud_libros extends HttpServlet {
         ls_pantalla += "<input type='submit' value='Modificar' name='boton'></td>";
         ls_pantalla += "</tr>";
         ls_pantalla += "</table>";
-        ls_pantalla += "</br></br></br><center>";
-        ls_pantalla += "<a href='http://localhost:8080/proyecto_distribuidas/serv_Menu_Biblioteca'><input type='submit' value='Regresar' name='boton' ></a>";
-        ls_pantalla += "</center></div>";
+        ls_pantalla += "</form></br></br></br><center>";
+        ls_pantalla += "<center><a href='http://localhost:8080/proyecto_distribuidas/serv_Menu_Biblioteca'><input type='submit' value='Regresar' name='boton' ></a></center>";
+        ls_pantalla += "</center>";
         ls_pantalla += "</body>";
         ls_pantalla += "</html>";
         return ls_pantalla;

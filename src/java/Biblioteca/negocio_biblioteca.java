@@ -104,7 +104,7 @@ public class negocio_biblioteca {
         return ii_retorno;
     }
     
-    public int insertarLibro(String isbn, String titulo, Autor autor,BigDecimal valor_prestamo) {
+    public int insertarLibro(String isbn, String titulo, String autor,BigDecimal valor_prestamo) {
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("proyecto_distribuidasPU");
         EntityManager em1 = factory.createEntityManager();
         Biblioteca.Libro lr = new Biblioteca.Libro();
@@ -125,7 +125,7 @@ public class negocio_biblioteca {
         return ii_retorno;
     }
     
-    public int modificarLibro(String isbn, String titulo, Autor autor,BigDecimal valor_prestamo) {
+    public int modificarLibro(String isbn, String titulo, String autor,BigDecimal valor_prestamo) {
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("proyecto_distribuidasPU");
         EntityManager em1 = factory.createEntityManager();
         Biblioteca.Libro lr = new Biblioteca.Libro();

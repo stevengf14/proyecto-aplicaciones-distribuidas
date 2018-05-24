@@ -19,4 +19,11 @@ public interface Bean_BibliotecaLocal {
 
     public List ExtraerCodigosLibrosNombre();
     public List ExtraerCodigosLibrosApellido();
+    public List ExtraerCodigosLibrosCodigo();
+    
+    
+    public List ExtraerCodigosLibrosIsbn();    
+    public List ExtraerCodigosLibrosTitulo();    
+    public List ExtraerCodigosLibrosValor();   
+    
 }

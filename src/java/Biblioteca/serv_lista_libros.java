@@ -5,15 +5,12 @@
  */
 package Biblioteca;
 
-import Contabilidad.Bean_ContabilidadLocal;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,11 +21,18 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author JONATHAN
  */
-@WebServlet(name = "serv_menu_biblioteca", urlPatterns = {"/serv_menu_biblioteca"})
-public class serv_autores extends HttpServlet {
+@WebServlet(name = "serv_lista_libros", urlPatterns = {"/serv_lista_libros"})
+public class serv_lista_libros extends HttpServlet {
 
-    String ls_mensaje = "";
-    negocio_biblioteca nb = new negocio_biblioteca();
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @EJB
     Bean_BibliotecaLocal beanBiblioteca;
 
@@ -38,33 +42,41 @@ public class serv_autores extends HttpServlet {
         PrintWriter out = response.getWriter();
         String is_pantalla = "";
         String is_boton = "";
-        String ls_codigo = "";
-        String ls_nombre = "";
-        String ls_apellido = "";
+        String ls_isbn = "";
+        String ls_titulo = "";
+        String ls_autor = "";
+        String ls_valor_prestamo = "";
         is_boton = request.getParameter("boton");
-        ls_codigo = request.getParameter("codigo");
-        ls_nombre = request.getParameter("nombre");
-        ls_apellido = request.getParameter("apellido");
-        is_pantalla = desplegar_pantalla("","","","block");
+        ls_isbn = request.getParameter("isbn");
+        ls_titulo = request.getParameter("titulo");
+        ls_titulo = request.getParameter("autor");
+        ls_valor_prestamo = request.getParameter("valor_prestamo");
+        is_pantalla = desplegar_pantalla("", "", "", 0, "block");
         out.println(is_pantalla);
     }
 
-    public String desplegar_pantalla(String codigo, String nombre, String apellido,String mostrar) {
-        String ls_pantalla = "";                
+    public String desplegar_pantalla(String isbn, String titulo, String autor, int valor_prestamo, String mostrar) {
+        List lista = new ArrayList<String>();
+        List lista1 = new ArrayList<String>();
+        lista = beanBiblioteca.ExtraerCodigosLibrosApellido();
+        lista1 = beanBiblioteca.ExtraerCodigosLibrosNombre();
+
+        List lista2 = new ArrayList<String>();
+        List lista3 = new ArrayList<String>();
+        List lista4 = new ArrayList<String>();
+        lista2 = beanBiblioteca.ExtraerCodigosLibrosIsbn();
+        lista3 = beanBiblioteca.ExtraerCodigosLibrosTitulo();
+        lista4 = beanBiblioteca.ExtraerCodigosLibrosValor();
+
+        String ls_pantalla = "";
         ls_pantalla += "<!DOCTYPE html>";
         ls_pantalla += "<html>";
         ls_pantalla += "<head>";
-        ls_pantalla += "<title>Servlet serv_menu_biblioteca</title>";        
-        ls_pantalla += "<script type=\"text/javascript\">"
-                + "function mostrar(){"
-                + "document.getElementById('botones_edicion').style.display = 'block';"
-                + "document.getElementById('cuenta').style.display = 'block';}"
-                + "function ocultar(){"
-                + "document.getElementById('ver').style.display = 'none';}"
-                +"</script>";
+        ls_pantalla += "<title>Servlet serv_menu_biblioteca</title>";
         ls_pantalla += "</head>";
         ls_pantalla += "<body>";
-        ls_pantalla += "<h1>Tabla de Autores</h1>";
+        ls_pantalla += "<form action='serv_autores' method='post'>";
+        ls_pantalla += "<h1>Tabla de Libro</h1>";
         ls_pantalla += "<header>";
         ls_pantalla += "<nav>";
         ls_pantalla += "<ul>";
@@ -75,30 +87,29 @@ public class serv_autores extends HttpServlet {
         ls_pantalla += "</ul>";
         ls_pantalla += "</nav>";
         ls_pantalla += "</header>";
-        ls_pantalla += "<form action='serv_autores' method='post'>";
-        ls_pantalla += "<table width='50%' border='1' align='center' id='tabla'>";
         ls_pantalla += "<table width='50%' border='1' align='center' id='tabla'>";
         ls_pantalla += "<tr>";
         ls_pantalla += "<td class='primera_fila'>Código</td>";
         ls_pantalla += "<td class='primera_fila'>Nombre</td>";
         ls_pantalla += "<td class='primera_fila'>Apellido</td>";
         ls_pantalla += "</tr>";
-        ls_pantalla += "<tr>";
-            ls_pantalla += "<td><input type='text' size='20' class='centrado'  paddding=10px name='codigo' " + "value='" + codigo + "'></input></td>";
-            ls_pantalla += "<td><input type='text' size='20' class='centrado' paddding=10px name='nombre' " + "value='" + nombre + "'></input></td>";
-            ls_pantalla += "<td><input type='text' size='20' class='centrado' paddding=10px name='apellido' " + "value='" + apellido + "'></input></td>";
+        for (int i = 0; i < lista.size(); i++) {
+            ls_pantalla += "<tr>";
+            ls_pantalla += "<td><input type='text' size='20' class='centrado'  paddding=10px name='isbn' " + "value='" + lista2.get(i) + "'></input></td>";
+            ls_pantalla += "<td><input type='text' size='20' class='centrado' paddding=10px name='titulo' " + "value='" + lista3.get(i) + "'></input></td>";
+            ls_pantalla += "<td><input type='text' size='20' class='centrado'  paddding=10px name='autor' " + "value='" + lista1.get(i) + " " + lista.get(i) + "'></input></td>";
+            ls_pantalla += "<td><input type='text' size='20' class='centrado' paddding=10px name='valor_prestamo' " + "value='" + lista4.get(i) + "'></input></td>";
             ls_pantalla += "</tr>";
+        }
         ls_pantalla += "</table>";
+        ls_pantalla += "<aside>";
+        ls_pantalla += "<input type='submit' value='Insertar' name='boton'></input>";
+        ls_pantalla += "<input type='submit' value='Eliminar' name='boton' ></input>";
+        ls_pantalla += "<input type='submit' value='Modificar' name='boton'></input>";
+        ls_pantalla += "<input type='submit' value='Buscar' name='boton'></input>";
+        ls_pantalla += "</aside>";
         ls_pantalla += "<br>";
         ls_pantalla += "</form>";
-
-        ls_pantalla += "<a href='http://localhost:9090/proyecto_distribuidas/serv_modificacion_autores'><input type='submit' name='boton' value='Insertar'></a>";
-        ls_pantalla += "<a href='http://localhost:9090/proyecto_distribuidas/serv_modificacion_autores'><input type='submit' name='boton' value='Modificar'></a>";
-        ls_pantalla += "<a href='http://localhost:9090/proyecto_distribuidas/serv_modificacion_autores'><input type='submit' name='boton' value='Eliminar'></a>";
-        ls_pantalla += "<a href='http://localhost:9090/proyecto_distribuidas/serv_modificacion_autores'><input type='submit' name='boton' value='Buscar'></a>";
-        ls_pantalla += "<aside>";
-        ls_pantalla += "</aside>";
-
         ls_pantalla += "</body>";
         ls_pantalla += "</html>";
         return ls_pantalla;

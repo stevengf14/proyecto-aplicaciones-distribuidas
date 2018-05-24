@@ -13,10 +13,13 @@ package Biblioteca;
 import Contabilidad.Bean_ContabilidadLocal;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.persistence.Temporal;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -61,8 +64,7 @@ public class serv_autor extends HttpServlet {
         if (is_boton == null || is_boton == "") {
             is_pantalla = desplegar_pantalla("", "", "");
         }
-
-        if (is_boton != null && is_boton != "") {
+        if (is_boton != null && !"".equals(is_boton)) {
             if (is_boton.equals("Insertar")) {
                 EntityManagerFactory factory = Persistence.createEntityManagerFactory("proyecto_distribuidasPU");
                 EntityManager em1 = factory.createEntityManager();
@@ -84,7 +86,19 @@ public class serv_autor extends HttpServlet {
                 factory.close();
             }
             if (is_boton.equals("Buscar")) {
-                is_pantalla = desplegar_pantalla("", "", "");
+                List<String> lista = new ArrayList<String>();
+                EntityManagerFactory factory = Persistence.createEntityManagerFactory("proyecto_distribuidasPU");
+                EntityManager em1 = factory.createEntityManager();
+                try {
+                    Query q = em1.createNativeQuery("SELECT AU_NOMBRE FROM AUTOR");
+                    lista = q.getResultList();
+                    ls_nombre=lista.get(Integer.getInteger(ls_codigo));                    
+                    is_pantalla = desplegar_pantalla(ls_codigo, ls_nombre, "");
+                } catch (Exception ex) {
+                    
+                }
+                em1.close();
+                factory.close();
             }
             if (is_boton.equals("Eliminar")) {
                 EntityManagerFactory factory = Persistence.createEntityManagerFactory("proyecto_distribuidasPU");
@@ -119,7 +133,7 @@ public class serv_autor extends HttpServlet {
         ls_pantalla += "<title>Servlet serv_menu_biblioteca</title>";
         ls_pantalla += "<link rel='stylesheet' type='text/css' href='estilos1.css'>";
         ls_pantalla += "</head>";
-        ls_pantalla += "<divaction='serv_autor' method='post'>";
+        ls_pantalla += "<form action='serv_autor' method='post'>";
         ls_pantalla += "<h1>Tabla de Autores</h1>";
         ls_pantalla += "<table width='50%' border='0' align='center'>";
         ls_pantalla += "<tr>";
@@ -138,15 +152,16 @@ public class serv_autor extends HttpServlet {
         ls_pantalla += "<input type='text' name='apellido' class='centrado'" + "value='" + as_apellido + "'></td>";
         ls_pantalla += "</tr>";
         ls_pantalla += "<tr>";
-        ls_pantalla += "<td colspan='1'><input type='submit' value='Insertar' name='boton' padding=20%>";
-        ls_pantalla += "<input type='submit' value='Buscar' name='boton' padding=20%></td>";
-        ls_pantalla += "<td colspan='1'><input type='submit' value='Eliminar' name='boton' padding=20%>";
-        ls_pantalla += "<input type='submit' value='Modificar' name='boton' padding=20%></td>";
+        ls_pantalla += "<td colspan='1'><input type='submit' value='Insertar' name='boton'>";
+        ls_pantalla += "<input type='submit' value='Buscar' name='boton'></td>";
+        ls_pantalla += "<td colspan='1'><input type='submit' value='Eliminar' name='boton'>";
+        ls_pantalla += "<input type='submit' value='Modificar' name='boton'></td>";
         ls_pantalla += "</tr>";
         ls_pantalla += "</table>";
         ls_pantalla += "</br></br></br><center>";
-        ls_pantalla += "<a href='http://localhost:8080/proyecto_distribuidas/serv_Menu_Biblioteca'><input type='submit' value='Regresar' name='boton' ></a>";
-        ls_pantalla += "</center></div>";
+        ls_pantalla += "</center></form>";
+        ls_pantalla += "</br></br>";
+        ls_pantalla += "<center><a href='http://localhost:8080/proyecto_distribuidas/serv_lista_autores'><input type='submit' value='Regresar' name='boton' ></a></center>";
         ls_pantalla += "</body>";
         ls_pantalla += "</html>";
         return ls_pantalla;

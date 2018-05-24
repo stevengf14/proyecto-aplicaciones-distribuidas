@@ -7,23 +7,16 @@ package Biblioteca;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import pkg_persistencia.PrestamoDetalle;
 
 /**
  *
@@ -35,12 +28,10 @@ import pkg_persistencia.PrestamoDetalle;
 @NamedQueries({
     @NamedQuery(name = "Libro.findAll", query = "SELECT l FROM Libro l")
     , @NamedQuery(name = "Libro.findByLibIsbn", query = "SELECT l FROM Libro l WHERE l.libIsbn = :libIsbn")
+    , @NamedQuery(name = "Libro.findByAuCodigo", query = "SELECT l FROM Libro l WHERE l.auCodigo = :auCodigo")
     , @NamedQuery(name = "Libro.findByLibTitulo", query = "SELECT l FROM Libro l WHERE l.libTitulo = :libTitulo")
     , @NamedQuery(name = "Libro.findByLibValorPrestamo", query = "SELECT l FROM Libro l WHERE l.libValorPrestamo = :libValorPrestamo")})
 public class Libro implements Serializable {
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "libIsbn")
-    private List<PrestamoDetalle> prestamoDetalleList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -51,6 +42,11 @@ public class Libro implements Serializable {
     private String libIsbn;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 5)
+    @Column(name = "AU_CODIGO")
+    private String auCodigo;
+    @Basic(optional = false)
+    @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "LIB_TITULO")
     private String libTitulo;
@@ -59,9 +55,6 @@ public class Libro implements Serializable {
     @NotNull
     @Column(name = "LIB_VALOR_PRESTAMO")
     private BigDecimal libValorPrestamo;
-    @JoinColumn(name = "AU_CODIGO", referencedColumnName = "AU_CODIGO")
-    @ManyToOne(optional = false)
-    private Autor auCodigo;
 
     public Libro() {
     }
@@ -70,8 +63,9 @@ public class Libro implements Serializable {
         this.libIsbn = libIsbn;
     }
 
-    public Libro(String libIsbn, String libTitulo, BigDecimal libValorPrestamo) {
+    public Libro(String libIsbn, String auCodigo, String libTitulo, BigDecimal libValorPrestamo) {
         this.libIsbn = libIsbn;
+        this.auCodigo = auCodigo;
         this.libTitulo = libTitulo;
         this.libValorPrestamo = libValorPrestamo;
     }
@@ -82,6 +76,14 @@ public class Libro implements Serializable {
 
     public void setLibIsbn(String libIsbn) {
         this.libIsbn = libIsbn;
+    }
+
+    public String getAuCodigo() {
+        return auCodigo;
+    }
+
+    public void setAuCodigo(String auCodigo) {
+        this.auCodigo = auCodigo;
     }
 
     public String getLibTitulo() {
@@ -98,14 +100,6 @@ public class Libro implements Serializable {
 
     public void setLibValorPrestamo(BigDecimal libValorPrestamo) {
         this.libValorPrestamo = libValorPrestamo;
-    }
-
-    public Autor getAuCodigo() {
-        return auCodigo;
-    }
-
-    public void setAuCodigo(Autor auCodigo) {
-        this.auCodigo = auCodigo;
     }
 
     @Override
@@ -131,15 +125,6 @@ public class Libro implements Serializable {
     @Override
     public String toString() {
         return "Biblioteca.Libro[ libIsbn=" + libIsbn + " ]";
-    }
-    
-    @XmlTransient
-    public List<PrestamoDetalle> getPrestamoDetalleList() {
-        return prestamoDetalleList;
-}
-
-    public void setPrestamoDetalleList(List<PrestamoDetalle> prestamoDetalleList) {
-        this.prestamoDetalleList = prestamoDetalleList;
     }
     
 }

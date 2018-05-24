@@ -6,20 +6,16 @@
 package Biblioteca;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -52,8 +48,6 @@ public class Autor implements Serializable {
     @Size(min = 1, max = 100)
     @Column(name = "AU_APELLIDO")
     private String auApellido;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "auCodigo")
-    private List<Libro> libroList;
 
     public Autor() {
     }
@@ -67,7 +61,7 @@ public class Autor implements Serializable {
         this.auNombre = auNombre;
         this.auApellido = auApellido;
     }
-    
+
     public String getAuCodigo() {
         return auCodigo;
     }
@@ -90,15 +84,6 @@ public class Autor implements Serializable {
 
     public void setAuApellido(String auApellido) {
         this.auApellido = auApellido;
-    }
-
-    @XmlTransient
-    public List<Libro> getLibroList() {
-        return libroList;
-    }
-
-    public void setLibroList(List<Libro> libroList) {
-        this.libroList = libroList;
     }
 
     @Override
