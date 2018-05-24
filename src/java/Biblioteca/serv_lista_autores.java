@@ -10,6 +10,9 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -50,7 +53,17 @@ public class serv_lista_autores extends HttpServlet {
         ls_codigo = request.getParameter("codigo");
         ls_nombre = request.getParameter("nombre");
         ls_apellido = request.getParameter("apellido");
-        is_pantalla = desplegar_pantalla("", "", "", "block");
+        serv_autor obj = new serv_autor();
+        //is_pantalla = desplegar_pantalla("", "", "", "block");
+        //out.println(is_pantalla);
+        if (is_boton == null || is_boton == "") {
+            is_pantalla = desplegar_pantalla("", "", "", "block");
+        }
+        if (is_boton != null && !"".equals(is_boton)) {
+            if (is_boton.equals("Insertar")) {
+                is_pantalla = desplegar_pantalla("", "", "", "block")+obj.desplegar_pantallaIngreso("","", "");
+            }
+        }
         out.println(is_pantalla);
     }
 
@@ -89,11 +102,17 @@ public class serv_lista_autores extends HttpServlet {
         //ls_pantalla += "</select>";
         ls_pantalla += "</table>";
         ls_pantalla += "</br>";
+        ls_pantalla += "<input type='submit' value='Insertar' name='boton'></input>";
+        ls_pantalla += "<input type='submit' value='Buscar' name='boton'></input>";
+        ls_pantalla += "<input type='submit' value='Eliminar' name='boton'></input>";
+        ls_pantalla += "<input type='submit' value='Actualziar' name='boton'></input>";
         ls_pantalla += "</form>";
 
-        ls_pantalla += "<center><a href='http://localhost:8080/proyecto_distribuidas/serv_autor'><input type='submit' name='boton' value='Insertar'></a></center>";
+        //ls_pantalla += "<center><a href='http://localhost:8080/proyecto_distribuidas/serv_autor'><input type='submit' name='boton' value='Insertar'></a></center>";
         ls_pantalla += "</br></br>";
+        ls_pantalla += "<aside>";
         ls_pantalla += "<center><a href='http://localhost:8080/proyecto_distribuidas/serv_Menu_Biblioteca'><input type='submit' value='Regresar' name='boton' ></a></center>";
+        ls_pantalla += "</aside>";
 
         ls_pantalla += "</body>";
         ls_pantalla += "</html>";

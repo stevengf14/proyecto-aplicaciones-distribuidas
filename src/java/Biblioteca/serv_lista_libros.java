@@ -77,23 +77,14 @@ public class serv_lista_libros extends HttpServlet {
         ls_pantalla += "<body>";
         ls_pantalla += "<form action='serv_autores' method='post'>";
         ls_pantalla += "<h1>Tabla de Libro</h1>";
-        ls_pantalla += "<header>";
-        ls_pantalla += "<nav>";
-        ls_pantalla += "<ul>";
-        ls_pantalla += "<li><a href='#'>Inicio</a></li>";
-        ls_pantalla += "<li><a href='#'>Categoria</a></li>";
-        ls_pantalla += "<li><a href='#'>Categoria 2</a></li>";
-        ls_pantalla += "<li><a href='#'>Categoria 3</a></li>";
-        ls_pantalla += "</ul>";
-        ls_pantalla += "</nav>";
-        ls_pantalla += "</header>";
         ls_pantalla += "<table width='50%' border='1' align='center' id='tabla'>";
         ls_pantalla += "<tr>";
-        ls_pantalla += "<td class='primera_fila'>Código</td>";
-        ls_pantalla += "<td class='primera_fila'>Nombre</td>";
-        ls_pantalla += "<td class='primera_fila'>Apellido</td>";
+        ls_pantalla += "<td class='primera_fila'>Código Isbn</td>";
+        ls_pantalla += "<td class='primera_fila'>Titulo</td>";
+        ls_pantalla += "<td class='primera_fila'>Autor</td>";
+        ls_pantalla += "<td class='primera_fila'>Valor Prestamo</td>";
         ls_pantalla += "</tr>";
-        for (int i = 0; i < lista.size(); i++) {
+        for (int i = 0; i < lista2.size(); i++) {
             ls_pantalla += "<tr>";
             ls_pantalla += "<td><input type='text' size='20' class='centrado'  paddding=10px name='isbn' " + "value='" + lista2.get(i) + "'></input></td>";
             ls_pantalla += "<td><input type='text' size='20' class='centrado' paddding=10px name='titulo' " + "value='" + lista3.get(i) + "'></input></td>";
@@ -102,12 +93,10 @@ public class serv_lista_libros extends HttpServlet {
             ls_pantalla += "</tr>";
         }
         ls_pantalla += "</table>";
-        ls_pantalla += "<aside>";
-        ls_pantalla += "<input type='submit' value='Insertar' name='boton'></input>";
-        ls_pantalla += "<input type='submit' value='Eliminar' name='boton' ></input>";
-        ls_pantalla += "<input type='submit' value='Modificar' name='boton'></input>";
-        ls_pantalla += "<input type='submit' value='Buscar' name='boton'></input>";
-        ls_pantalla += "</aside>";
+        ls_pantalla += "<center><a href='http://localhost:8080/proyecto_distribuidas/serv_crud_libros'><input type='submit' name='boton' value='Insertar'></a></center>";
+        ls_pantalla += "</br></br>";
+        ls_pantalla += "<center><a href='http://localhost:8080/proyecto_distribuidas/serv_Menu_Biblioteca'><input type='submit' value='Regresar' name='boton' ></a></center>";
+
         ls_pantalla += "<br>";
         ls_pantalla += "</form>";
         ls_pantalla += "</body>";

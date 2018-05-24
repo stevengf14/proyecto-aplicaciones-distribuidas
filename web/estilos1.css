@@ -64,3 +64,9 @@ table{
 td{
     padding:5px 0;
 }
+aside{
+	width: 30%;
+	float: right;
+	padding: 20px;
+	box-sizing: border-box;	
+}
