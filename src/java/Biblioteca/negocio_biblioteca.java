@@ -34,7 +34,7 @@ public class negocio_biblioteca {
         List lista2 = new ArrayList<String>();
         lista2 = beanBiblioteca.ExtraerCodigosLibrosCodigo();
         Biblioteca.Autor ar = new Biblioteca.Autor("00"+lista2.size()+"a");        
-        //ar.setAuCodigo(codigo);
+        
         ar.setAuNombre(nombre);
         ar.setAuApellido(apellido);
         try {
