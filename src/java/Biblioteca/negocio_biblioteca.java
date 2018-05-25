@@ -6,6 +6,9 @@
 package Biblioteca;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.persistence.EntityManager;
@@ -22,12 +25,16 @@ import javax.persistence.Persistence;
 public class negocio_biblioteca {
 
     int ii_retorno;
-    
-    public int insertarAutor(String codigo, String nombre, String apellido) {
+    @EJB
+    Bean_BibliotecaLocal beanBiblioteca;
+
+    public int insertarAutor(String nombre, String apellido) {
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("proyecto_distribuidasPU");
-        EntityManager em1 = factory.createEntityManager();
-        Biblioteca.Autor ar = new Biblioteca.Autor();
-        ar.setAuCodigo(codigo);
+        EntityManager em1 = factory.createEntityManager();          
+        List lista2 = new ArrayList<String>();
+        lista2 = beanBiblioteca.ExtraerCodigosLibrosCodigo();
+        Biblioteca.Autor ar = new Biblioteca.Autor("00"+lista2.size()+"a");        
+        //ar.setAuCodigo(codigo);
         ar.setAuNombre(nombre);
         ar.setAuApellido(apellido);
         try {
@@ -40,9 +47,31 @@ public class negocio_biblioteca {
         }
         em1.close();
         factory.close();
+        /*
+        EntityManagerFactory factory = Persistence.createEntityManagerFactory("proyecto_distribuidasPU");
+                EntityManager em1 = factory.createEntityManager();
+                Autor pr = new Autor(ls_codigo);
+                pr.setAuNombre(ls_nombre);
+                pr.setAuApellido(ls_apellifo);
+                try {
+                    em1.getTransaction().begin();
+                    em1.persist(pr);
+                    em1.getTransaction().commit();
+                    is_pantalla = desplegar_pantalla_confirmacion();
+                } catch (Exception ex) {
+                    //ls_mensaje = "El error es: " + ex.getMessage();
+                    is_pantalla = desplegar_pantallaIngreso("", "", "");
+                    ls_mensaje = "Inserción Incorrecta";
+                }
+                em1.close();
+                factory.close();
+        
+        */
+        
+        
         return ii_retorno;
     }
-    
+
     public int modificarAutor(String codigo, String nombre, String apellido) {
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("proyecto_distribuidasPU");
         EntityManager em1 = factory.createEntityManager();
@@ -84,7 +113,7 @@ public class negocio_biblioteca {
         factory.close();
         return ls_codigo;
     }
-    
+
     public int eliminarAutor(String codigo) {
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("proyecto_distribuidasPU");
         EntityManager em1 = factory.createEntityManager();
@@ -103,93 +132,5 @@ public class negocio_biblioteca {
         factory.close();
         return ii_retorno;
     }
-    
-    public int insertarLibro(String isbn, String titulo, String autor,BigDecimal valor_prestamo) {
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("proyecto_distribuidasPU");
-        EntityManager em1 = factory.createEntityManager();
-        Biblioteca.Libro lr = new Biblioteca.Libro();
-        lr.setLibIsbn(isbn);
-        lr.setLibTitulo(titulo);
-        lr.setAuCodigo(autor);    
-        lr.setLibValorPrestamo(valor_prestamo);
-        try {
-            em1.getTransaction().begin();
-            em1.persist(lr);
-            em1.getTransaction().commit();
-            ii_retorno = 1;
-        } catch (Exception ex) {
-            ii_retorno = -1;
-        }
-        em1.close();
-        factory.close();
-        return ii_retorno;
-    }
-    
-    public int modificarLibro(String isbn, String titulo, String autor,BigDecimal valor_prestamo) {
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("proyecto_distribuidasPU");
-        EntityManager em1 = factory.createEntityManager();
-        Biblioteca.Libro lr = new Biblioteca.Libro();
-        try {
-            lr = em1.find(Libro.class, isbn);
-            em1.getTransaction().begin();
-            if ("".equals(titulo)) {
-                lr.setAuCodigo(autor);
-                lr.setLibValorPrestamo(valor_prestamo);
-            } else if (autor.toString() == "") {
-                lr.setLibTitulo(titulo);                
-                lr.setLibValorPrestamo(valor_prestamo);
-            } else if (valor_prestamo.toString() == "") {
-                lr.setLibTitulo(titulo);   
-                lr.setAuCodigo(autor);
-            }else {
-                lr.setLibTitulo(titulo);   
-                lr.setAuCodigo(autor);                
-                lr.setLibValorPrestamo(valor_prestamo);
-            }
-            em1.persist(lr);
-            em1.getTransaction().commit();
-            ii_retorno = 1;
-        } catch (Exception ex) {
-            ii_retorno = -1;
-        }
-        em1.close();
-        factory.close();
-        return ii_retorno;
-    }
 
-    public String buscarLibro(String isbn) {
-        String ls_isbn;
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("proyecto_distribuidasPU");
-        EntityManager em1 = factory.createEntityManager();
-        Biblioteca.Libro lr = new Biblioteca.Libro();
-        try {
-            lr = em1.find(Libro.class, isbn);
-            ls_isbn = lr.getLibIsbn();
-        } catch (Exception ex) {
-            ls_isbn = null;
-        }
-        em1.close();
-        factory.close();
-        return ls_isbn;
-    }
-    
-    public int eliminarLibro(String isbn) {
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("proyecto_distribuidasPU");
-        EntityManager em1 = factory.createEntityManager();
-        Biblioteca.Libro lr = new Biblioteca.Libro();
-        lr.setLibIsbn(isbn);
-        try {
-            lr = em1.find(Libro.class, isbn);
-            em1.getTransaction().begin();
-            em1.remove(lr);
-            em1.getTransaction().commit();
-            ii_retorno = 1;
-        } catch (Exception ex) {
-            ii_retorno = -1;
-        }
-        em1.close();
-        factory.close();
-        return ii_retorno;
-    }
-    
 }

@@ -61,11 +61,12 @@ public class serv_autor extends HttpServlet {
         ls_codigo = request.getParameter("codigo");
         ls_nombre = request.getParameter("nombre");
         ls_apellifo = request.getParameter("apellido");
+        serv_lista_autores obj = new serv_lista_autores();
         if (is_boton == null || is_boton == "") {
-            is_pantalla = desplegar_pantalla("", "", "");
+            is_pantalla = desplegar_pantallaIngreso("", "", "");
         }
         if (is_boton != null && !"".equals(is_boton)) {
-            if (is_boton.equals("Insertar")) {
+            if (is_boton.equals("Guardar Ingreso")) {
                 EntityManagerFactory factory = Persistence.createEntityManagerFactory("proyecto_distribuidasPU");
                 EntityManager em1 = factory.createEntityManager();
                 Autor pr = new Autor(ls_codigo);
@@ -75,11 +76,10 @@ public class serv_autor extends HttpServlet {
                     em1.getTransaction().begin();
                     em1.persist(pr);
                     em1.getTransaction().commit();
-                    is_pantalla = desplegar_pantalla("", "", "");
-                    ls_mensaje = "Inserción correcta";
+                    is_pantalla = desplegar_pantalla_confirmacion();
                 } catch (Exception ex) {
-                    ls_mensaje = "El error es: " + ex.getMessage();
-                    is_pantalla = desplegar_pantalla("", "", "");
+                    //ls_mensaje = "El error es: " + ex.getMessage();
+                    is_pantalla = desplegar_pantallaIngreso("", "", "");
                     ls_mensaje = "Inserción Incorrecta";
                 }
                 em1.close();
@@ -92,10 +92,10 @@ public class serv_autor extends HttpServlet {
                 try {
                     Query q = em1.createNativeQuery("SELECT AU_NOMBRE FROM AUTOR");
                     lista = q.getResultList();
-                    ls_nombre=lista.get(Integer.getInteger(ls_codigo));                    
-                    is_pantalla = desplegar_pantalla(ls_codigo, ls_nombre, "");
+                    ls_nombre = lista.get(Integer.getInteger(ls_codigo));
+                    is_pantalla = desplegar_pantallaIngreso(ls_codigo, ls_nombre, "");
                 } catch (Exception ex) {
-                    
+
                 }
                 em1.close();
                 factory.close();
@@ -110,7 +110,7 @@ public class serv_autor extends HttpServlet {
                 em1.getTransaction().begin();
                 em1.remove(pr);
                 em1.getTransaction().commit();
-                is_pantalla = desplegar_pantalla("", "", "");
+                is_pantalla = desplegar_pantallaIngreso("", "", "");
                 ls_mensaje = beanBiblioteca.BuscarCuenta(ls_codigo);
                 /*} catch (Exception ex) {
                     is_pantalla = desplegar_pantalla("", "", "");
@@ -125,7 +125,31 @@ public class serv_autor extends HttpServlet {
         out.println(is_pantalla);
     }
 
-    public String desplegar_pantalla(String as_codigo, String as_nombre, String as_apellido) {
+    public String desplegar_pantalla_confirmacion() {
+        String ls_pantalla = "";
+        ls_pantalla += "<!DOCTYPE html>";
+        ls_pantalla += "<html>";
+        ls_pantalla += "<head>";
+        ls_pantalla += "<title>Servlet serv_menu_biblioteca</title>";
+        ls_pantalla += "<link rel='stylesheet' type='text/css' href='estilos1.css'>";
+        ls_pantalla += "</head>";
+        ls_pantalla += "<form action='serv_autor' method='post'>";
+        ls_pantalla += "<h1>Tabla de Autores</h1>";
+        ls_pantalla += "<table width='50%' border='0' align='center'>";
+        ls_pantalla += "<tr>";
+        ls_pantalla += "<td>Autor del Libro ingresado correctamente</td>";
+        ls_pantalla += "</tr>";
+        ls_pantalla += "</table>";
+        ls_pantalla += "</br></br></br><center>";
+        ls_pantalla += "</center></form>";
+        ls_pantalla += "</br></br>";
+        ls_pantalla += "<center><a href='http://localhost:8080/proyecto_distribuidas/serv_lista_autores'><input type='submit' value='Regresar' name='boton' ></a></center>";
+        ls_pantalla += "</body>";
+        ls_pantalla += "</html>";
+        return ls_pantalla;
+    }
+
+    public String desplegar_pantallaIngreso(String as_codigo, String as_nombre, String as_apellido) {
         String ls_pantalla = "";
         ls_pantalla += "<!DOCTYPE html>";
         ls_pantalla += "<html>";
@@ -152,14 +176,52 @@ public class serv_autor extends HttpServlet {
         ls_pantalla += "<input type='text' name='apellido' class='centrado'" + "value='" + as_apellido + "'></td>";
         ls_pantalla += "</tr>";
         ls_pantalla += "<tr>";
-        ls_pantalla += "<td colspan='1'><input type='submit' value='Insertar' name='boton'>";
-        ls_pantalla += "<input type='submit' value='Buscar' name='boton'></td>";
-        ls_pantalla += "<td colspan='1'><input type='submit' value='Eliminar' name='boton'>";
-        ls_pantalla += "<input type='submit' value='Modificar' name='boton'></td>";
+        ls_pantalla += "<td></td><center><td colspan='1'><input type='submit' value='Guardar Ingreso' name='boton'></td><center>";
         ls_pantalla += "</tr>";
         ls_pantalla += "</table>";
         ls_pantalla += "</br></br></br><center>";
         ls_pantalla += "</center></form>";
+        ls_pantalla += "</br></br>";
+        ls_pantalla += "<center><a href='http://localhost:8080/proyecto_distribuidas/serv_lista_autores'><input type='submit' value='Regresar' name='boton' ></a></center>";
+        ls_pantalla += "</body>";
+        ls_pantalla += "</html>";
+        return ls_pantalla;
+    }
+
+    public String desplegar_pantallaBusqueda(String as_codigo) {
+        List lista = new ArrayList<String>();
+        List lista1 = new ArrayList<String>();
+        List lista2 = new ArrayList<String>();
+        lista2 = beanBiblioteca.ExtraerCodigosLibrosCodigo();
+        lista = beanBiblioteca.ExtraerCodigosLibrosApellido();
+        lista1 = beanBiblioteca.ExtraerCodigosLibrosNombre();
+        String ls_pantalla = "";
+        ls_pantalla += "<!DOCTYPE html>";
+        ls_pantalla += "<html>";
+        ls_pantalla += "<head>";
+        ls_pantalla += "<title>Servlet serv_menu_biblioteca</title>";
+        ls_pantalla += "<link rel='stylesheet' type='text/css' href='estilos1.css'>";
+        ls_pantalla += "</head>";
+        ls_pantalla += "<form action='serv_autor' method='post'>";
+        ls_pantalla += "<table width='50%' border='1' align='center' id='tabla'>";
+        ls_pantalla += "<tr>";
+        ls_pantalla += "<td class='primera_fila'>Código</td>";
+        ls_pantalla += "<td class='primera_fila'>Nombre</td>";
+        ls_pantalla += "<td class='primera_fila'>Apellido</td>";
+        ls_pantalla += "</tr>";
+
+        //ls_pantalla += "<select id='cuenta' name='cuenta' style='display:+" + mostrar + ";>";
+        for (int i = 0; i < lista.size(); i++) {
+            ls_pantalla += "<center><tr>";
+            ls_pantalla += "<td><input type='text' size='20' class='centrado'  paddding=10px name='codigo' " + "value='" + lista2.get(i) + "'></input></td>";
+            ls_pantalla += "<td><input type='text' size='20' class='centrado' paddding=10px name='nombre' " + "value='" + lista1.get(i) + "'></input></td>";
+            ls_pantalla += "<td><input type='text' size='20' class='centrado' paddding=10px name='apellido' " + "value='" + lista.get(i) + "'></input></td>";
+            ls_pantalla += "</tr></center>";
+        }
+        //ls_pantalla += "</select>";
+        ls_pantalla += "</table>";
+        ls_pantalla += "</br>";
+        ls_pantalla += "</form>";
         ls_pantalla += "</br></br>";
         ls_pantalla += "<center><a href='http://localhost:8080/proyecto_distribuidas/serv_lista_autores'><input type='submit' value='Regresar' name='boton' ></a></center>";
         ls_pantalla += "</body>";
